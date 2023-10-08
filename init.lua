@@ -110,7 +110,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -227,7 +227,9 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  { import = 'plugins' },
+  { import = 'remaps' },
+  { import = 'config' }
 }, {})
 
 -- [[ Setting options ]]
@@ -239,7 +241,6 @@ vim.o.hlsearch = false
 
 -- Make line numbers default
 vim.wo.number = true
-
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
@@ -270,6 +271,15 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+
+-- GENERAL CUSTOM CONFIG ADDED BY JAVLOCAN
+-- NetWR config
+vim.api.nvim_set_var("netrw_keepdir", 0)
+vim.api.nvim_set_var("netrw_banner", 0)
+-- Numbers to relative
+vim.wo.relativenumber = true
+-- FAT cursor
+vim.opt.guicursor = ""
 
 -- [[ Basic Keymaps ]]
 
@@ -475,9 +485,12 @@ local servers = {
   -- clangd = {},
   -- gopls = {},
   -- pyright = {},
-  -- rust_analyzer = {},
-  -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  cssls = {},
+  unocss = {},
+  json_ls = {},
+  eslint = {},
+  tsserver = {},
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
 
   lua_ls = {
     Lua = {
