@@ -487,7 +487,7 @@ local servers = {
   -- pyright = {},
   cssls = {},
   unocss = {},
-  json_ls = {},
+  jsonls = {},
   eslint = {},
   tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
