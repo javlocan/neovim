@@ -1,5 +1,5 @@
 # kickstart.nvim
-
+`git clone https://github.com/javlocan/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim`
 ## My personal config
 It might be useful for some other nvim noob
 
