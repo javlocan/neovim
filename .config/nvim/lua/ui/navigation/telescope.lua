@@ -20,7 +20,7 @@ return {
       require('telescope').setup {
         pickers = {
           buffers = {
-            theme = 'ivy',
+            -- theme = 'ivy',
             mappings = {
               i = {
                 ['<C-q>'] = 'delete_buffer',
@@ -28,7 +28,7 @@ return {
             },
           },
           diagnostics = {
-            theme = 'ivy',
+            -- theme = 'ivy',
           },
         },
         extensions = {
