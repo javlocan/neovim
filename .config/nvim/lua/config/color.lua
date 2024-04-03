@@ -41,4 +41,42 @@ color.check_and_set_theme = function(colorschemes, default)
   end
 end
 
+color.incline = {}
+
+color.incline.get_highlights_from_lualine_theme = function(c)
+  local table = {}
+  table.a = { name = 'InclineA', fg = c.normal.a.fg, bg = c.normal.a.bg, bold = true }
+  table.b = { name = 'InclineB', fg = c.normal.b.fg, bg = c.normal.b.bg, bold = false }
+  table.c = { name = 'InclineC', fg = c.normal.c.fg, bg = c.normal.c.bg, bold = false }
+  table.e = { name = 'InclineError', fg = c.replace.a.bg, bg = c.normal.c.bg, bold = false }
+  table.w = { name = 'InclineWarn', fg = c.visual.a.bg, bg = c.normal.c.bg, bold = false }
+  table.i = { name = 'InclineInfo', fg = c.insert.a.bg, bg = c.normal.c.bg, bold = false }
+  table.h = { name = 'InclineHint', fg = c.command.a.bg, bg = c.normal.c.bg, bold = false }
+  return table
+end
+
+color.incline.set_incline_highlights = function(t)
+  for _, hl in pairs(t) do
+    vim.api.nvim_set_hl(0, hl.name, { fg = hl.fg, bg = hl.bg, bold = hl.bold })
+  end
+end
+
+color.incline.get_diagnostic_label = function(props)
+  local icons = {
+    Error = '',
+    Warn = '',
+    Info = '',
+    Hint = '',
+  }
+
+  local label = {}
+  for severity, icon in pairs(icons) do
+    local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
+    if n > 0 then
+      table.insert(label, { icon .. ' ' .. n .. ' ', group = 'Incline' .. severity })
+    end
+  end
+  return label
+end
+
 return color
