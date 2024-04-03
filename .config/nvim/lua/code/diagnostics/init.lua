@@ -1,4 +1,4 @@
 return {
-  require 'code.diagnostics.trouble',
-  require 'code.diagnostics.lint',
+  { import = 'code.diagnostics.trouble' },
+  { import = 'code.diagnostics.lint' },
 }

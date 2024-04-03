@@ -1,5 +1,5 @@
 return {
-  require 'ui.color.colorscheme',
-  require 'ui.color.colorizer',
-  -- require 'ui.color.styler',
+  { import = 'ui.color.colorscheme' },
+  { import = 'ui.color.colorizer' },
+--  { import = 'ui.color.styler' },
 }

@@ -7,8 +7,16 @@ return {
         globalstatus = true,
         component_separators = { left = ' ', right = ' ' },
         section_separators = { left = ' ', right = ' ' },
-        -- theme = 'gruvbox-material',
-        theme = 'gruvbox',
+        theme = 'gruvbox-material',
+      },
+      sections = {
+        lualine_a = { 'mode' },
+        lualine_b = { 'buffers' },
+        lualine_c = {},
+        lualine_x = { 'diff' },
+        lualine_y = { 'branch' },
+        -- lualine_z = { 'progress' },
+        lualine_z = {},
       },
     },
   },
@@ -16,7 +24,7 @@ return {
     'b0o/incline.nvim',
     event = 'VeryLazy',
     config = function()
-      local function get_diagnostic_label(props)
+      local function get_diagnostic_label(props, guibg)
         local icons = {
           Error = '',
           Warn = '',
@@ -28,7 +36,7 @@ return {
         for severity, icon in pairs(icons) do
           local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
           if n > 0 then
-            table.insert(label, { icon .. ' ' .. n .. ' ', group = 'DiagnosticSign' .. severity })
+            table.insert(label, { icon .. ' ' .. n .. ' ', group = 'DiagnosticSign' .. severity, guibg = guibg })
           end
         end
         return label
@@ -40,33 +48,70 @@ return {
             vertical = 'top',
             horizontal = 'right',
           },
-          padding = 1,
-          margin = { vertical = 2, horizontal = 1 },
+          padding = 0, -- is only horizontal
+          margin = { vertical = 2, horizontal = 0 },
         },
+        -- Investigar esto de los highlight groups
+        -- highlight = {
+        --   groups = {
+        --     InclineNormal = {
+        --       default = false,
+        --       group = 'StatusLine',
+        --     },
+        --   },
+        -- },
         hide = {
           cursorline = true,
         },
-        debounce_threshold = { falling = 500, rising = 250 },
+        -- debounce_threshold = { falling = 500, rising = 250 },
         render = function(props)
-          local bufname = vim.api.nvim_buf_get_name(props.buf)
-          local filename = vim.fn.fnamemodify(bufname, ':t')
-          local diagnostics = get_diagnostic_label(props)
-          local modified = vim.api.nvim_buf_get_option(props.buf, 'modified') and 'bold,italic' or 'None'
-          local filetype_icon, color = require('nvim-web-devicons').get_icon_color(filename)
-
-          local buffer = {
-            { filetype_icon, guifg = color },
-            { ' ' },
-            { filename, gui = modified },
+          local c = require 'lualine.themes.gruvbox-material'
+          c = {
+            grey = c.normal.a.bg,
+            black = c.normal.a.fg,
+            lightgrey = c.normal.b.bg,
+            white = c.normal.b.fg,
+            darkgrey = c.normal.c.bg,
+            -- c.fg = grey
           }
 
+          local bufname = vim.api.nvim_buf_get_name(props.buf)
+          local filename = vim.fn.fnamemodify(bufname, ':t')
+          if filename == '' then
+            filename = '[No Name]'
+          end
+          local gui_modified = vim.api.nvim_buf_get_option(props.buf, 'modified') and 'bold,italic' or 'None'
+          local ft_icon, color = require('nvim-web-devicons').get_icon_color(filename)
+
+          local helpers = require 'incline.helpers'
+
+          local buffer = {
+            -- ft_icon and { ' ', ft_icon, ' ', guibg = color, guifg = helpers.contrast_color(color) } or '',
+            { '  ', filename, '  ', gui = gui_modified, guibg = c.lightgrey, guifg = c.white },
+          }
+
+          local diagnostics = get_diagnostic_label(props, c.darkgrey)
           if #diagnostics > 0 then
-            table.insert(diagnostics, { '| ', guifg = 'grey' })
+            table.insert(diagnostics, '')
           end
-          for _, buffer_ in ipairs(buffer) do
-            table.insert(diagnostics, buffer_)
-          end
-          return diagnostics
+
+          local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+          local pos = string.format('%s:%s', col, row)
+          local position = {
+            string.format(' %5s ', pos),
+            guibg = c.grey,
+            guifg = c.black,
+            gui = 'bold',
+          }
+
+          return {
+            {
+              ' ',
+              diagnostics,
+            },
+            buffer,
+            position,
+          }
         end,
       }
     end,

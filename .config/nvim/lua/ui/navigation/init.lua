@@ -1,3 +1,3 @@
 return {
-  require 'ui.navigation.telescope',
+  { import = 'ui.navigation.telescope' },
 }

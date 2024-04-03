@@ -1,5 +1,22 @@
 return {
-
+  {
+    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+    -- config = function()
+    --   vim.diagnostic.config { virtual_text = false, virtual_lines = true }
+    -- end,
+    config = function()
+      require('lsp_lines').setup {
+        vim.diagnostic.config {
+          virtual_text = false,
+          virtual_lines = {
+            highlight_whole_line = true,
+            -- only_current_line=true
+          },
+        },
+      }
+      vim.keymap.set('', '<Leader>l', require('lsp_lines').toggle, { desc = 'Toggle lsp_lines' })
+    end,
+  },
   { -- Linting
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -55,10 +72,10 @@ return {
           require('lint').try_lint()
         end,
       })
-      vim.keymap.set('n', '<leader>l', function()
-        lint.try_lint()
-        print 'Trigger linting for current file'
-      end, { desc = 'Trigger linting for current file' })
+      --   vim.keymap.set('n', '<leader>l', function()
+      --     lint.try_lint()
+      --     print 'Trigger linting for current file'
+      --   end, { desc = 'Trigger linting for current file' })
     end,
   },
 }

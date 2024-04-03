@@ -1,32 +1,26 @@
 require 'config.init'
 require 'config.keymaps'
-require 'config.color'
 
 require('lazy').setup({
   -- Import plugins by domain
-  -- NOTE: 2. UI keymaps have detailed explanation on plugin configuration
-  { import = 'ui.keymaps' },
-  { import = 'ui.color' },
-  -- { import = 'ui.indent_line' },
-  { import = 'ui.navigation' },
---  { import = 'ui.statusline' },
-  { import = 'ui.git' },
+  require 'ui.keymaps',
+  require 'ui.color', -- dir
+  require 'ui.navigation', -- dir
+  require 'ui.statusline',
+  require 'ui.git',
 
-  -- NOTE: 1. Comment has basic instructions on initializing plugins
-  { import = 'code.comment' },
-  { import = 'code.typing' },
-  { import = 'code.formatting' },
+  require 'code.comment',
+  require 'code.typing',
+  require 'code.formatting',
 
-  { import = 'code.treesitter' },
-  { import = 'code.diagnostics' },
+  require 'code.treesitter',
+  require 'code.diagnostics', -- dir
 
-  { import = 'code.lsp' },
-  { import = 'code.dap' },
-  { import = 'code.cmp' },
+  require 'code.lsp', -- dir
+  require 'code.dap',
+  require 'code.cmp',
 }, {
   ui = {
-    -- If you are using a Nerd Font: set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
     icons = vim.g.have_nerd_font and {} or {
       cmd = '⌘',
       config = '🛠',
