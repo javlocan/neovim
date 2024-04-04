@@ -57,8 +57,8 @@ return {
         theme = 'wave',
         background = { dark = 'dragon' },
         colors = { palette = { dragonBlack0 = '#181818' } },
-        vim.cmd 'colorscheme kanagawa',
       }
+      vim.cmd 'colorscheme kanagawa'
     end,
   },
   {
