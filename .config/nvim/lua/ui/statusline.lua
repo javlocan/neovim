@@ -28,11 +28,22 @@ return {
       local incline = require('config.color').incline
       local highlights = incline.get_highlights_from_lualine_theme(c)
 
-      vim.api.nvim_create_autocmd('Colorscheme', {
-        callback = function()
-          incline.set_incline_highlights(highlights)
-        end,
-      })
+      vim.api.nvim_create_autocmd(
+        {
+          -- 'BufEnter',
+          'FileType',
+          'BufWinEnter',
+          'WinNew',
+        },
+        -- 'Colorscheme',
+        {
+          callback = function()
+            vim.schedule(function()
+              incline.set_incline_highlights(highlights)
+            end)
+          end,
+        }
+      )
     end,
   },
   {
