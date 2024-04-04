@@ -3,10 +3,10 @@ return {
     'folke/styler.nvim',
     config = function()
       local colorschemes = {}
-      colorschemes['tokyonight'] = { 'lua' }
-      colorschemes['gruvbox-material'] = { 'rust', 'help', 'lualine' }
-      colorschemes['dracula'] = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'json' }
-      colorschemes['onedark'] = { 'html', 'htmldjango', 'css', 'scss', 'markdown' }
+      colorschemes['rose-pine'] = { 'lua' }
+      colorschemes['gruvbox'] = { 'rust', 'lualine' }
+      colorschemes['onedark'] = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'json' }
+      colorschemes['kanagawa'] = { 'html', 'htmldjango', 'css', 'scss', 'markdown' }
 
       local themes = require('config.color').setup_theme_table(colorschemes)
 

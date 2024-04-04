@@ -17,6 +17,7 @@ return {
               align = 'top',
               x_padding = 3,
               y_padding = 3,
+              winblend = 0,
             },
           },
         },

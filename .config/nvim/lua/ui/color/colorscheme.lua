@@ -1,44 +1,16 @@
 return {
   {
-    'folke/tokyonight.nvim',
+    'rose-pine/neovim',
+    name = 'rose-pine',
     config = function()
-      require('tokyonight').setup {
-        style = 'night',
+      require('rose-pine').setup {
+        enable = { terminal = true },
         styles = {
-          comments = { italic = true },
+          bold = true,
+          italic = true,
+          transparency = true,
         },
       }
-      -- vim.cmd 'colorscheme tokyonight'
-    end,
-  },
-  {
-    -- 'askfiy/visual_studio_code',
-    'Mofiqul/dracula.nvim',
-    priority = 100,
-    -- opts = {},
-  },
-  -- {
-  --   'Mofiqul/vscode.nvim',
-  --   config = function()
-  --     require('vscode').setup {
-  --       italic_comments = true,
-  --       underline_links = true,
-  --     }
-  --     -- vim.cmd 'colorscheme vscode'
-  --   end,
-  -- },
-  {
-    'sainnhe/gruvbox-material',
-    config = function()
-      vim.g.gruvbox_material_enable_bold = '1'
-      vim.g.gruvbox_material_enable_italic = '1'
-      vim.g.gruvbox_material_sign_column_background = 'grey'
-      vim.g.gruvbox_material_ui_contrast = 'high'
-      vim.g.gruvbox_material_background = 'hard'
-      vim.g.gruvbox_material_diagnostic_line_highlight = '1'
-      vim.g.gruvbox_material_diagnostic_text_highlight = '1'
-
-      vim.cmd 'colorscheme gruvbox-material'
     end,
   },
   {
@@ -46,7 +18,7 @@ return {
     config = function()
       require('onedarkpro').setup {
         options = {
-          -- transparency = true,
+          transparency = true,
         },
       }
       -- local default = 'gruvbox-material'
@@ -74,5 +46,42 @@ return {
       --   end,
       -- })
     end,
+  },
+  {
+    'rebelot/kanagawa.nvim',
+    priority = 2000,
+    config = function()
+      require('kanagawa').setup {
+        terminalColors = true,
+        transparent = true,
+        theme = 'wave',
+        background = { dark = 'dragon' },
+        colors = { palette = { dragonBlack0 = '#181818' } },
+        vim.cmd 'colorscheme kanagawa',
+      }
+    end,
+  },
+  {
+    'ellisonleao/gruvbox.nvim',
+    priority = 1000,
+    config = function()
+      require('gruvbox').setup {
+        terminal_colors = true, -- add neovim terminal colors
+        undercurl = true,
+        underline = true,
+        bold = true,
+        italic = {
+          strings = true,
+          emphasis = true,
+          comments = true,
+          operators = false,
+          folds = true,
+        },
+        strikethrough = true,
+        inverse = true, -- invert background for search, diffs, statuslines and errors
+        transparent_mode = true,
+      }
+    end,
+    opts = ...,
   },
 }
