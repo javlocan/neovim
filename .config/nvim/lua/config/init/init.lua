@@ -18,7 +18,8 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+-- vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard:append 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -62,6 +63,8 @@ vim.opt.scrolloff = 10
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 
-vim.opt.cmdheight = 0
+-- vim.opt.cmdheight = 0
+
+vim.cmd 'let g:netrw_liststyle=3'
 
 require 'config.init.lazy'

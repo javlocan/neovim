@@ -9,6 +9,16 @@ return {
         desc = 'Diagnostics (Trouble)',
       },
       {
+        '<leader>xx',
+        '<cmd>Trouble diagnostics toggle<cr>',
+        desc = 'Diagnostics (Trouble)',
+      },
+      {
+        '<leader>xx',
+        '<cmd>Trouble diagnostics toggle<cr>',
+        desc = 'Diagnostics (Trouble)',
+      },
+      {
         '<leader>xX',
         '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
         desc = 'Buffer Diagnostics (Trouble)',
@@ -34,6 +44,26 @@ return {
         desc = 'Quickfix List (Trouble)',
       },
     },
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    opts = {
+      auto_close = true,
+      focus = true,
+      win = { type = 'split', size = { height = 0.25 } },
+      preview = { type = 'float', size = { width = 0.4, height = 0.6 } },
+      modes = {
+        preview_float = {
+          mode = 'diagnostics',
+          preview = {
+            type = 'float',
+            relative = 'editor',
+            border = 'rounded',
+            title = 'Preview',
+            title_pos = 'center',
+            position = { 0, -2 },
+            size = { width = 0.3, height = 0.3 },
+            zindex = 200,
+          },
+        },
+      },
+    }, -- for default options, refer to the configuration section for custom setup.
   },
 }

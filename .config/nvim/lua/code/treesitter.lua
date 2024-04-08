@@ -4,21 +4,33 @@ return {
     build = ':TSUpdate',
     opts = {
       autotag = { enable = true },
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'rust',
+        'bash',
+        'lua',
+        'vim',
+        'vimdoc',
+        'markdown',
+        'html',
+        'css',
+        'javascript',
+        'typescript',
+        'json',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
         enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
+        -- additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      textobjects = { select = { enable = true, lookahead = true }, swap = { enable = true, lookahead = true } },
+      incremental_selection = {
+        enable = true,
+        keymaps = { init_selection = '<C-space>', node_incremental = '<C-Space>', node_decremental = '<bs>', scope_incremental = false },
+      },
     },
     config = function(_, opts)
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
 

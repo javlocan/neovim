@@ -1,62 +1,41 @@
 return {
   {
-    'rose-pine/neovim',
-    name = 'rose-pine',
-    config = function()
-      require('rose-pine').setup {
-        enable = { terminal = true },
-        styles = {
-          bold = true,
-          italic = true,
-          transparency = true,
-        },
-      }
-    end,
-  },
-  {
-    'olimorris/onedarkpro.nvim',
-    config = function()
-      require('onedarkpro').setup {
-        options = {
-          transparency = true,
-        },
-      }
-      -- local default = 'gruvbox-material'
-      -- -- vim.cmd(string.format('colorscheme %s', default))
-      --
-      -- local colorscheme_augroup = vim.api.nvim_create_augroup('colorscheme', { clear = true })
-      --
-      -- local colorschemes = {}
-      -- colorschemes['tokyonight'] = { 'lua' }
-      -- colorschemes['gruvbox-material'] = { 'rust' }
-      -- colorschemes['vscode'] = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'json' }
-      -- colorschemes['onedark'] = { 'html', 'htmldjango', 'css', 'scss' }
-      --
-      -- local c = require 'config.color'
-      -- local colorschemes = c.setup_theme_table(colorschemes)
-      --
-      -- vim.api.nvim_create_autocmd({
-      --   -- 'FileType',
-      --   -- 'WinEnter',
-      --   'BufEnter',
-      -- }, {
-      --   group = colorscheme_augroup,
-      --   callback = function()
-      --     c.check_and_set_theme(colorschemes, default)
-      --   end,
-      -- })
-    end,
-  },
-  {
     'rebelot/kanagawa.nvim',
-    priority = 2000,
+    priority = 1000,
     config = function()
       require('kanagawa').setup {
         terminalColors = true,
-        transparent = true,
+        colors = {
+          theme = {
+            all = {
+              ui = {
+                bg_gutter = 'none',
+              },
+            },
+          },
+        },
         theme = 'wave',
-        background = { dark = 'dragon' },
-        colors = { palette = { dragonBlack0 = '#181818' } },
+        undercurl = true, -- enable undercurls
+        commentStyle = { italic = true },
+        keywordStyle = { italic = true, bold = true },
+        statementStyle = { bold = true },
+        typeStyle = { bold = true },
+        overrides = function(colors)
+          local theme = colors.theme
+          return {
+            TelescopeTitle = { fg = theme.ui.special, bold = true },
+            TelescopePromptNormal = { bg = theme.ui.bg_p1 },
+            TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
+            TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
+            TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
+            TelescopePreviewNormal = { bg = theme.ui.bg_dim },
+            TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
+            Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 }, -- add `blend = vim.o.pumblend` to enable transparency
+            PmenuSel = { fg = 'NONE', bg = theme.ui.bg_p2 },
+            PmenuSbar = { bg = theme.ui.bg_m1 },
+            PmenuThumb = { bg = theme.ui.bg_p2 },
+          }
+        end,
       }
       vim.cmd 'colorscheme kanagawa'
     end,
@@ -74,14 +53,55 @@ return {
           strings = true,
           emphasis = true,
           comments = true,
-          operators = false,
+          operators = true,
           folds = true,
         },
         strikethrough = true,
         inverse = true, -- invert background for search, diffs, statuslines and errors
-        transparent_mode = true,
       }
     end,
     opts = ...,
+  },
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    config = function()
+      require('rose-pine').setup {
+        enable = { terminal = true },
+        styles = {
+          bold = true,
+          italic = true,
+        },
+      }
+    end,
+  },
+  {
+    'olimorris/onedarkpro.nvim',
+    config = function()
+      require('onedarkpro').setup {
+        options = {},
+      }
+    end,
+  },
+  {
+    'folke/tokyonight.nvim',
+    priority = 1000,
+    config = function()
+      require('tokyonight').setup {
+        style = 'night', -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+        light_style = 'day', -- The theme is used when the background is set to light
+        transparent = false, -- Enable this to disable setting the background color
+        terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
+        styles = {
+          comments = { italic = true },
+          keywords = { italic = true },
+          functions = { bold = true },
+          variables = { bold = true },
+        },
+        on_colors = function(colors)
+          -- colors.bg = '#181818'
+        end,
+      }
+    end,
   },
 }

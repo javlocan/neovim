@@ -7,7 +7,9 @@ require('lazy').setup({
   require 'ui.color', -- dir
   require 'ui.navigation', -- dir
   require 'ui.statusline',
+  require 'ui.dressing',
   require 'ui.git',
+  require 'ui.greeter',
 
   require 'code.comment',
   require 'code.typing',

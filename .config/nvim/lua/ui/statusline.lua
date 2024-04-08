@@ -85,7 +85,7 @@ return {
           --   table.insert(diagnostics, 1, ' ')
           -- end
 
-          local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+          local row, col = unpack(vim.api.nvim_win_get_cursor(props.win))
           local pos = string.format('%s:%s', col, row)
           local position = {
             string.format(' %5s ', pos),
