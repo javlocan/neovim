@@ -24,6 +24,8 @@ return {
           local theme = colors.theme
           return {
             TelescopeTitle = { fg = theme.ui.special, bold = true },
+            TelescopeNormal = { bg = theme.ui.bg_p1 },
+            TelescopeBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
             TelescopePromptNormal = { bg = theme.ui.bg_p1 },
             TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
             TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },

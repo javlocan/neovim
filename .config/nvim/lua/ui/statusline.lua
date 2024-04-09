@@ -8,25 +8,27 @@ return {
           globalstatus = true,
           component_separators = { left = ' ', right = ' ' },
           section_separators = { left = ' ', right = ' ' },
-          theme = 'gruvbox-material',
+          theme = require('config.color').lualine.theme,
         },
         sections = {
-          lualine_a = { 'mode' },
-          lualine_b = { 'buffers' },
+          lualine_a = { {
+            'mode',
+            fmt = function(str)
+              return string.format(' %s ', str)
+            end,
+          } },
+          lualine_b = {}, --{ 'buffers' },
           lualine_c = {},
-          lualine_x = { 'diff' },
-          lualine_y = { 'branch' },
-          lualine_z = {},
+          lualine_x = {},
+          lualine_y = { 'diff', 'branch' },
+          lualine_z = {}, -- probably unused because of aesthetics
         },
       }
 
       require('lualine').setup(opts)
 
-      local theme = string.format('lualine.themes.%s', opts.options.theme)
-      local c = require(theme)
-
       local incline = require('config.color').incline
-      local highlights = incline.get_highlights_from_lualine_theme(c)
+      local highlights = incline.get_highlights_from_lualine_theme()
 
       vim.api.nvim_create_autocmd(
         {
@@ -80,6 +82,7 @@ return {
           }
 
           local incline = require('config.color').incline
+
           local diagnostics = incline.get_diagnostic_label(props)
           -- if #diagnostics > 0 then
           --   table.insert(diagnostics, 1, ' ')
