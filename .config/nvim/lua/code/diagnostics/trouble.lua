@@ -55,7 +55,7 @@ return {
 
       win = { type = 'split', size = { height = 0.30 } },
 
-      preview = { type = 'float', position = { 0.1, 0.5 }, size = { width = 0.98, height = 0.60 } },
+      preview = { type = 'float', position = { 0.1, 0.5 }, size = { width = 0.4, height = 0.6 } },
       modes = {
         preview_float = {
           mode = 'diagnostics',

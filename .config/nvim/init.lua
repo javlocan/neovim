@@ -22,6 +22,10 @@ require('lazy').setup({
   require 'code.cmp',
 
   {
+    'Tummetott/reticle.nvim',
+    opts = {},
+  },
+  {
     'sunjon/shade.nvim',
     config = function()
       require('shade').setup {

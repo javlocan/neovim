@@ -41,50 +41,6 @@ local color = {}
 --   end
 -- end
 
-color.incline = {}
-
-color.incline.get_highlights_from_lualine_theme = function()
-  local table = {}
-  local c = require('config.color').lualine.theme
-
-  table.a = { name = 'InclineA', fg = c.normal.a.fg, bg = c.normal.b.fg, bold = true }
-  table.b = { name = 'InclineB', fg = c.normal.a.fg, bg = c.normal.b.bg, bold = false }
-  table.c = { name = 'InclineC', fg = c.normal.c.fg, bg = c.normal.c.bg, bold = false }
-  table.e = { name = 'InclineError', fg = c.replace.a.fg, bg = c.normal.c.bg, bold = false }
-  table.w = { name = 'InclineWarn', fg = c.visual.a.fg, bg = c.normal.c.bg, bold = false }
-  table.i = { name = 'InclineInfo', fg = c.insert.a.fg, bg = c.normal.c.bg, bold = false }
-  table.h = { name = 'InclineHint', fg = c.command.a.fg, bg = c.normal.c.bg, bold = false }
-  return table
-end
-
-color.incline.set_incline_highlights = function(t)
-  for _, hl in pairs(t) do
-    vim.api.nvim_set_hl(0, hl.name, { fg = hl.fg, bg = hl.bg, bold = hl.bold })
-  end
-end
-
-color.incline.get_diagnostic_label = function(props)
-  local icons = {
-    Error = '',
-    Warn = '',
-    Info = '',
-    Hint = '',
-  }
-
-  local label = {}
-  for severity, icon in pairs(icons) do
-    local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
-    if n > 0 then
-      table.insert(label, { icon .. ' ' .. n .. ' ', group = 'Incline' .. severity })
-    end
-  end
-  return label
-end
-
-color.lualine = {}
-
--- This code is stolen directly from lualine github / theme auto section
-
 local function extract_highlight_colors(color_group, scope)
   local color = require('lualine.highlight').get_lualine_hl(color_group)
   if not color then
@@ -147,6 +103,12 @@ color.palette = {
 }
 
 local c = color.palette
+
+color.lualine = {}
+
+-- This code is stolen directly from lualine github / theme auto section
+-- And the style is totally inspired in tj's at date 09.04.2024
+
 color.lualine.theme = {
   normal = {
     a = { bg = c.bg_d, fg = c.fg_l },
@@ -154,7 +116,7 @@ color.lualine.theme = {
     c = { bg = c.bg_m, fg = c.fg_l },
   },
   insert = {
-    a = { bg = c.bg_d, fg = c.ins },
+    a = { bg = c.bg_m, fg = c.fg_l },
     b = { bg = c.bg_m, fg = c.bg_l },
     c = { bg = c.bg_m, fg = c.fg_l },
   },
@@ -174,4 +136,46 @@ color.lualine.theme = {
     c = { bg = c.bg_m, fg = c.fg_l },
   },
 }
+
+color.incline = {}
+
+color.incline.get_highlights_from_lualine_theme = function()
+  local table = {}
+  local c = require('config.color').lualine.theme
+
+  table.a = { name = 'InclineA', fg = c.normal.b.bg, bg = c.normal.b.fg, bold = true } -- position
+  -- table.a = { name = 'InclineA', fg = '#060606', bg = c.normal.b.fg, bold = true } -- position
+  table.b = { name = 'InclineB', fg = c.normal.a.fg, bg = c.normal.b.bg, bold = false } -- file
+  table.c = { name = 'InclineC', fg = c.normal.c.fg, bg = c.normal.c.bg, bold = false } -- diagnostic or grapple?
+  table.e = { name = 'InclineError', fg = c.replace.a.fg, bg = c.normal.c.bg, bold = false }
+  table.w = { name = 'InclineWarn', fg = c.visual.a.fg, bg = c.normal.c.bg, bold = false }
+  table.i = { name = 'InclineInfo', fg = c.insert.a.fg, bg = c.normal.c.bg, bold = false }
+  table.h = { name = 'InclineHint', fg = c.command.a.fg, bg = c.normal.c.bg, bold = false }
+  return table
+end
+
+color.incline.set_incline_highlights = function(t)
+  for _, hl in pairs(t) do
+    vim.api.nvim_set_hl(0, hl.name, { fg = hl.fg, bg = hl.bg, bold = hl.bold })
+  end
+end
+
+color.incline.get_diagnostic_label = function(props)
+  local icons = {
+    Error = '',
+    Warn = '',
+    Info = '',
+    Hint = '',
+  }
+
+  local label = {}
+  for severity, icon in pairs(icons) do
+    local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
+    if n > 0 then
+      table.insert(label, { icon .. ' ' .. n .. ' ', group = 'Incline' .. severity })
+    end
+  end
+  return label
+end
+
 return color
