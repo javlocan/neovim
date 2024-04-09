@@ -46,9 +46,16 @@ return {
     },
     opts = {
       auto_close = true,
+      restore = true,
       focus = true,
-      win = { type = 'split', size = { height = 0.25 } },
-      preview = { type = 'float', size = { width = 0.4, height = 0.6 } },
+      keys = {
+        ['<cr>'] = 'jump_close',
+        ['o'] = 'jump',
+      },
+
+      win = { type = 'split', size = { height = 0.30 } },
+
+      preview = { type = 'float', position = { 0.1, 0.5 }, size = { width = 0.98, height = 0.60 } },
       modes = {
         preview_float = {
           mode = 'diagnostics',
