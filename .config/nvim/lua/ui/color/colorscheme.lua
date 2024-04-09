@@ -14,7 +14,7 @@ return {
             },
           },
         },
-        theme = 'wave',
+        -- theme = 'wave',
         undercurl = true, -- enable undercurls
         commentStyle = { italic = true },
         keywordStyle = { italic = true, bold = true },
@@ -42,68 +42,68 @@ return {
       vim.cmd 'colorscheme kanagawa'
     end,
   },
-  {
-    'ellisonleao/gruvbox.nvim',
-    priority = 1000,
-    config = function()
-      require('gruvbox').setup {
-        terminal_colors = true, -- add neovim terminal colors
-        undercurl = true,
-        underline = true,
-        bold = true,
-        italic = {
-          strings = true,
-          emphasis = true,
-          comments = true,
-          operators = true,
-          folds = true,
-        },
-        strikethrough = true,
-        inverse = true, -- invert background for search, diffs, statuslines and errors
-      }
-    end,
-    opts = ...,
-  },
-  {
-    'rose-pine/neovim',
-    name = 'rose-pine',
-    config = function()
-      require('rose-pine').setup {
-        enable = { terminal = true },
-        styles = {
-          bold = true,
-          italic = true,
-        },
-      }
-    end,
-  },
-  {
-    'olimorris/onedarkpro.nvim',
-    config = function()
-      require('onedarkpro').setup {
-        options = {},
-      }
-    end,
-  },
-  {
-    'folke/tokyonight.nvim',
-    priority = 1000,
-    config = function()
-      require('tokyonight').setup {
-        style = 'night', -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
-        light_style = 'day', -- The theme is used when the background is set to light
-        transparent = false, -- Enable this to disable setting the background color
-        terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
-        styles = {
-          comments = { italic = true },
-          keywords = { italic = true },
-          functions = { bold = true },
-          variables = { bold = true },
-        },
-        on_colors = function(colors)
-          -- colors.bg = '#181818'
-        end,
-      }
-    end,
-  },
+  -- {
+  --   'ellisonleao/gruvbox.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     require('gruvbox').setup {
+  --       terminal_colors = true, -- add neovim terminal colors
+  --       undercurl = true,
+  --       underline = true,
+  --       bold = true,
+  --       italic = {
+  --         strings = true,
+  --         emphasis = true,
+  --         comments = true,
+  --         operators = true,
+  --         folds = true,
+  --       },
+  --       strikethrough = true,
+  --       inverse = true, -- invert background for search, diffs, statuslines and errors
+  --     }
+  --   end,
+  --   opts = ...,
+  -- },
+  -- {
+  --   'rose-pine/neovim',
+  --   name = 'rose-pine',
+  --   config = function()
+  --     require('rose-pine').setup {
+  --       enable = { terminal = true },
+  --       styles = {
+  --         bold = true,
+  --         italic = true,
+  --       },
+  --     }
+  --   end,
+  -- },
+  -- {
+  --   'olimorris/onedarkpro.nvim',
+  --   config = function()
+  --     require('onedarkpro').setup {
+  --       options = {},
+  --     }
+  --   end,
+  -- },
+  -- {
+  --   'folke/tokyonight.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     require('tokyonight').setup {
+  --       style = 'night', -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+  --       light_style = 'day', -- The theme is used when the background is set to light
+  --       transparent = false, -- Enable this to disable setting the background color
+  --       terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
+  --       styles = {
+  --         comments = { italic = true },
+  --         keywords = { italic = true },
+  --         functions = { bold = true },
+  --         variables = { bold = true },
+  --       },
+  --       on_colors = function(colors)
+  --         -- colors.bg = '#181818'
+  --       end,
+  --     }
+  --   end,
+  -- },
 }

@@ -7,7 +7,6 @@ require('lazy').setup({
   require 'ui.color', -- dir
   require 'ui.navigation', -- dir
   require 'ui.statusline',
-  -- require 'ui.dressing',
   require 'ui.git',
   require 'ui.greeter',
 
@@ -21,6 +20,19 @@ require('lazy').setup({
   require 'code.lsp', -- dir
   require 'code.dap',
   require 'code.cmp',
+
+  {
+    'sunjon/shade.nvim',
+    config = function()
+      require('shade').setup {
+        overlay_opacity = 66,
+        opacity_step = 6,
+        keys = {
+          toggle = '<C-w>d',
+        },
+      }
+    end,
+  },
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {
