@@ -36,6 +36,11 @@ return {
           -- neovim nighhtly inline hints
           vim.lsp.inlay_hint.enable(event.buf, true)
 
+          map('<leader>h', function()
+            local is_enabled = vim.lsp.inlay_hint.is_enabled(event.buf)
+            vim.lsp.inlay_hint.enable(event.buf, not is_enabled)
+          end, 'Toggle Inlay [H]ints')
+
           map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
           map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
