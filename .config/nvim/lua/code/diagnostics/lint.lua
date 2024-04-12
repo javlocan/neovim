@@ -5,16 +5,16 @@ return {
     --   vim.diagnostic.config { virtual_text = false, virtual_lines = true }
     -- end,
     config = function()
-      require('lsp_lines').setup {
-        vim.diagnostic.config {
-          virtual_text = false,
-          virtual_lines = {
-            highlight_whole_line = true,
-            -- only_current_line=true
-          },
+      vim.diagnostic.config {
+        -- virtual_text = false,
+        virtual_lines = {
+          highlight_whole_line = true,
+          only_current_line = true,
         },
       }
       vim.keymap.set('', '<Leader>l', require('lsp_lines').toggle, { desc = 'Toggle lsp_lines' })
+
+      require('lsp_lines').setup()
     end,
   },
   { -- Linting

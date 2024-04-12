@@ -37,6 +37,12 @@ require('lazy').setup({
       }
     end,
   },
+  -- {
+  --   'simrat39/inlay-hints.nvim',
+  --   config = function()
+  --     require('inlay-hints').setup()
+  --   end,
+  -- },
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {

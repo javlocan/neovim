@@ -51,6 +51,10 @@ return {
   {
     'b0o/incline.nvim',
     event = 'VeryLazy',
+    dependencies = {
+      'nvim-lualine/lualine.nvim',
+    },
+
     config = function()
       require('incline').setup {
         window = {

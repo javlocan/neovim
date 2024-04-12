@@ -66,5 +66,6 @@ vim.opt.hlsearch = true
 -- vim.opt.cmdheight = 0
 
 vim.cmd 'let g:netrw_liststyle=3'
+--
 
 require 'config.init.lazy'

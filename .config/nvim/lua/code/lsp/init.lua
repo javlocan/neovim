@@ -1,4 +1,5 @@
 return {
+  require 'code.lsp.rust',
 
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -32,6 +33,9 @@ return {
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
+          -- neovim nighhtly inline hints
+          vim.lsp.inlay_hint.enable(event.buf, true)
+
           map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
           map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -62,24 +66,27 @@ return {
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       local servers = {
-        rust_analyzer = {
-          settings = {
-            ['rust-analyzer'] = {
-              checkOnSave = true,
-              check = {
-                enable = true,
-                command = 'clippy',
-                features = 'all',
-              },
-            },
-          },
-        },
+        -- rust_analyzer = {
+        --   settings = {
+        --     ['rust-analyzer'] = {
+        --       checkOnSave = true,
+        --       check = {
+        --         enable = true,
+        --         command = 'clippy',
+        --         features = 'all',
+        --       },
+        --     },
+        --   },
+        -- },
         tsserver = {},
         lua_ls = {
           settings = {
             Lua = {
               completion = {
                 callSnippet = 'Replace',
+              },
+              hint = {
+                enable = true,
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               -- diagnostics = { disable = { 'missing-fields' } },
