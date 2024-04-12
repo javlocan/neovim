@@ -25,18 +25,18 @@ require('lazy').setup({
     'Tummetott/reticle.nvim',
     opts = {},
   },
-  {
-    'sunjon/shade.nvim',
-    config = function()
-      require('shade').setup {
-        overlay_opacity = 66,
-        opacity_step = 6,
-        keys = {
-          toggle = '<C-w>d',
-        },
-      }
-    end,
-  },
+  -- {
+  --   'sunjon/shade.nvim',
+  --   config = function()
+  --     require('shade').setup {
+  --       overlay_opacity = 66,
+  --       opacity_step = 6,
+  --       keys = {
+  --         toggle = '<C-w>d',
+  --       },
+  --     }
+  --   end,
+  -- },
   -- {
   --   'simrat39/inlay-hints.nvim',
   --   config = function()
