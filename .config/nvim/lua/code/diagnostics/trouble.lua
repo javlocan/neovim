@@ -4,44 +4,24 @@ return {
     branch = 'dev', -- IMPORTANT!
     keys = {
       {
-        '<leader>xx',
+        '<leader>xd',
         '<cmd>Trouble diagnostics toggle<cr>',
-        desc = 'Diagnostics (Trouble)',
+        desc = 'Tr[X]uble Open [D]iagnostics',
       },
       {
         '<leader>xx',
-        '<cmd>Trouble diagnostics toggle<cr>',
-        desc = 'Diagnostics (Trouble)',
-      },
-      {
-        '<leader>xx',
-        '<cmd>Trouble diagnostics toggle<cr>',
-        desc = 'Diagnostics (Trouble)',
-      },
-      {
-        '<leader>xX',
         '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
-        desc = 'Buffer Diagnostics (Trouble)',
+        desc = 'Tr[X]uble Open Buffer Diagnostics',
       },
       {
         '<leader>cs',
         '<cmd>Trouble symbols toggle focus=false<cr>',
-        desc = 'Symbols (Trouble)',
+        desc = 'Tr[X]uble Open Symbols',
       },
       {
         '<leader>cl',
         '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
-        desc = 'LSP Definitions / references / ... (Trouble)',
-      },
-      {
-        '<leader>xL',
-        '<cmd>Trouble loclist toggle<cr>',
-        desc = 'Location List (Trouble)',
-      },
-      {
-        '<leader>xQ',
-        '<cmd>Trouble qflist toggle<cr>',
-        desc = 'Quickfix List (Trouble)',
+        desc = 'Tr[X]uble Open LSP Definitions / references / ...',
       },
     },
     opts = {
@@ -53,9 +33,14 @@ return {
         ['o'] = 'jump',
       },
 
-      win = { type = 'split', size = { height = 0.30 } },
+      win = { type = 'split', size = { height = 0.25 } },
+      preview = {
+        type = 'float',
+        border = 'solid',
+        position = { 0.05, 0.5 },
+        size = { width = 0.5, height = 0.65 },
+      },
 
-      preview = { type = 'float', position = { 0.1, 0.5 }, size = { width = 0.4, height = 0.6 } },
       modes = {
         preview_float = {
           mode = 'diagnostics',
