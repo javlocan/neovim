@@ -45,8 +45,14 @@ return {
     },
     opts = {
       indent = {
-        highlight = 'Comment',
+        highlight = { 'Pmenu', 'Whitespace' },
+        char = '',
       },
+      whitespace = {
+        highlight = { 'Pmenu', 'Whitespace' },
+        remove_blankline_trail = false,
+      },
+      -- scope = { enabled = false },
       exclude = { filetypes = { 'dashboard', 'oil', 'help' } },
     },
   },
