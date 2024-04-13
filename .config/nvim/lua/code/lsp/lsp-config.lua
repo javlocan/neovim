@@ -54,7 +54,7 @@ return {
           -- neovim nighhtly inline hints
           if client and client.server_capabilities.inlayHintProvider then
             vim.g.inlay_hints_visible = true
-            vim.lsp.inlay_hint.enable(event.buf, true)
+            -- vim.lsp.inlay_hint.enable(event.buf, true)
           else
             print "There're no inlay hints"
           end
