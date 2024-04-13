@@ -5,8 +5,10 @@ return {
     opts = {
       autotag = { enable = true },
       ensure_installed = {
-        'rust',
         'bash',
+        'jq',
+        'awk',
+        'rust',
         'lua',
         'vim',
         'vimdoc',
@@ -15,7 +17,10 @@ return {
         'css',
         'javascript',
         'typescript',
+        'tsx',
         'json',
+        'yaml',
+        'toml',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,

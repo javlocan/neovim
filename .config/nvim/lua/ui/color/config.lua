@@ -1,45 +1,4 @@
-local color = {}
-
--- color.setup_theme_table = function(colorschemes)
---   local result = {}
---   for cs, fts in pairs(colorschemes) do
---     for _, ft in pairs(fts) do
---       result[ft] = { colorscheme = cs }
---       -- result[ft] = cs
---     end
---   end
---   return result
--- end
---
--- color.set_theme = function(cs)
---   vim.schedule(function()
---     local cmd = string.format('colorscheme %s', cs)
---     vim.cmd(cmd)
---   end)
--- end
---
--- color.check_and_set_theme = function(colorschemes, default)
---   local colorscheme = function()
---     return vim.cmd 'colorscheme'
---   end
---   local filetype = vim.bo.filetype
---
---   local not_in_list = true
---
---   if filetype ~= '' then
---     for lang, cs in pairs(colorschemes) do
---       if filetype == lang and colorscheme ~= cs then
---         not_in_list = false
---         color.set_theme(cs)
---         break
---       end
---     end
---
---     if not_in_list and colorscheme ~= default then
---       color.set_theme(default)
---     end
---   end
--- end
+local M = {}
 
 local function extract_highlight_colors(color_group, scope)
   local color = require('lualine.highlight').get_lualine_hl(color_group)
@@ -90,7 +49,7 @@ local function extract_color_from_hllist(scope, syntaxlist, default)
   return default
 end
 
-color.palette = {
+M.palette = {
   nor = extract_color_from_hllist('bg', { 'PmenuSel', 'PmenuThumb', 'TabLineSel' }, '#000000'),
   ins = extract_color_from_hllist('fg', { 'String', 'MoreMsg' }, '#000000'),
   rep = extract_color_from_hllist('fg', { 'Number', 'Type' }, '#000000'),
@@ -102,14 +61,14 @@ color.palette = {
   bg_d = extract_color_from_hllist('bg', { 'Normal', 'StatusLineNC' }, '#000000'),
 }
 
-local c = color.palette
+local c = M.palette
 
-color.lualine = {}
+M.lualine = {}
 
 -- This code is stolen directly from lualine github / theme auto section
 -- And the style is totally inspired in tj's at date 09.04.2024
 
-color.lualine.theme = {
+M.lualine.theme = {
   normal = {
     a = { bg = c.bg_d, fg = c.fg_l },
     b = { bg = c.bg_m, fg = c.bg_l },
@@ -137,11 +96,11 @@ color.lualine.theme = {
   },
 }
 
-color.incline = {}
+M.incline = {}
 
-color.incline.get_highlights_from_lualine_theme = function()
+M.incline.get_highlights_from_lualine_theme = function()
   local table = {}
-  local c = require('config.color').lualine.theme
+  local c = require('ui.color.config').lualine.theme
 
   table.a = { name = 'InclineA', fg = c.normal.b.bg, bg = c.normal.b.fg, bold = true } -- position
   -- table.a = { name = 'InclineA', fg = '#060606', bg = c.normal.b.fg, bold = true } -- position
@@ -154,13 +113,13 @@ color.incline.get_highlights_from_lualine_theme = function()
   return table
 end
 
-color.incline.set_incline_highlights = function(t)
+M.incline.set_incline_highlights = function(t)
   for _, hl in pairs(t) do
     vim.api.nvim_set_hl(0, hl.name, { fg = hl.fg, bg = hl.bg, bold = hl.bold })
   end
 end
 
-color.incline.get_diagnostic_label = function(props)
+M.incline.get_diagnostic_label = function(props)
   local icons = {
     Error = '',
     Warn = '',
@@ -178,4 +137,45 @@ color.incline.get_diagnostic_label = function(props)
   return label
 end
 
-return color
+-- color.setup_theme_table = function(colorschemes)
+--   local result = {}
+--   for cs, fts in pairs(colorschemes) do
+--     for _, ft in pairs(fts) do
+--       result[ft] = { colorscheme = cs }
+--       -- result[ft] = cs
+--     end
+--   end
+--   return result
+-- end
+--
+-- color.set_theme = function(cs)
+--   vim.schedule(function()
+--     local cmd = string.format('colorscheme %s', cs)
+--     vim.cmd(cmd)
+--   end)
+-- end
+--
+-- color.check_and_set_theme = function(colorschemes, default)
+--   local colorscheme = function()
+--     return vim.cmd 'colorscheme'
+--   end
+--   local filetype = vim.bo.filetype
+--
+--   local not_in_list = true
+--
+--   if filetype ~= '' then
+--     for lang, cs in pairs(colorschemes) do
+--       if filetype == lang and colorscheme ~= cs then
+--         not_in_list = false
+--         color.set_theme(cs)
+--         break
+--       end
+--     end
+--
+--     if not_in_list and colorscheme ~= default then
+--       color.set_theme(default)
+--     end
+--   end
+-- end
+
+return M

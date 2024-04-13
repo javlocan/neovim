@@ -3,12 +3,12 @@ return {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      local opts = {
+      require('lualine').setup {
         options = {
           globalstatus = true,
           component_separators = { left = ' ', right = ' ' },
           section_separators = { left = ' ', right = ' ' },
-          theme = require('config.color').lualine.theme,
+          theme = require('ui.color.config').lualine.theme,
         },
         sections = {
           lualine_a = { {
@@ -24,10 +24,17 @@ return {
           lualine_z = {}, -- probably unused because of aesthetics
         },
       }
+    end,
+  },
+  {
+    'b0o/incline.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'nvim-lualine/lualine.nvim',
+    },
 
-      require('lualine').setup(opts)
-
-      local incline = require('config.color').incline
+    config = function()
+      local incline = require('ui.color.config').incline
       local highlights = incline.get_highlights_from_lualine_theme()
 
       vim.api.nvim_create_autocmd(
@@ -46,16 +53,7 @@ return {
           end,
         }
       )
-    end,
-  },
-  {
-    'b0o/incline.nvim',
-    event = 'VeryLazy',
-    dependencies = {
-      'nvim-lualine/lualine.nvim',
-    },
 
-    config = function()
       require('incline').setup {
         window = {
           placement = {
@@ -84,8 +82,6 @@ return {
             -- ft_icon and { ' ', ft_icon, ' ', guibg = color, guifg = helpers.contrast_color(color) } or '',
             { '  ', filename, '  ' },
           }
-
-          local incline = require('config.color').incline
 
           local diagnostics = incline.get_diagnostic_label(props)
           -- if #diagnostics > 0 then
