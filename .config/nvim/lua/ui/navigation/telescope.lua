@@ -16,6 +16,7 @@ return {
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
+      local open_with_trouble = require('trouble.sources.telescope').open
       require('telescope').setup {
         pickers = {
           buffers = {
@@ -23,18 +24,19 @@ return {
               i = {
                 ['<C-q>'] = 'delete_buffer',
               },
+              n = {
+                ['<C-q>'] = 'delete_buffer',
+              },
             },
           },
         },
-        -- extensions = {
-        --   ['ui-select'] = {
-        --     require('telescope.themes').get_ivy(),
-        --   },
-        -- },
         defaults = {
+          mappings = {
+            i = { ['<c-t>'] = open_with_trouble },
+            n = { ['<c-t>'] = open_with_trouble },
+          },
           layout_config = {
             horizontal = {
-              -- anchor = 'S',
               height = 0.8,
             },
           },
@@ -42,7 +44,8 @@ return {
       }
 
       pcall(require('telescope').load_extension, 'fzf')
-      -- pcall(require('telescope').load_extension, 'ui-select')
+
+      vim.keymap.set('n', '<leader>xt', '<cmd>Trouble telescope<cr>')
 
       local builtin = require 'telescope.builtin'
 
