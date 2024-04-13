@@ -56,9 +56,10 @@ M.palette = {
   vis = extract_color_from_hllist('fg', { 'Special', 'Boolean', 'Constant' }, '#000000'),
   com = extract_color_from_hllist('fg', { 'Identifier' }, '#000000'),
   fg_l = extract_color_from_hllist('fg', { 'Normal', 'StatusLine' }, '#000000'),
+  fg_m = extract_color_from_hllist('bg', { 'Normal', 'StatusLine' }, '#000000'),
   bg_l = extract_color_from_hllist('bg', { 'CursorLine' }, '#000000'),
-  bg_m = extract_color_from_hllist('bg', { 'StatusLine' }, '#000000'),
-  bg_d = extract_color_from_hllist('bg', { 'Normal', 'StatusLineNC' }, '#000000'),
+  bg_m = extract_color_from_hllist('bg', { 'Normal', 'StatusLineNC' }, '#000000'),
+  bg_d = extract_color_from_hllist('bg', { 'StatusLine' }, '#000000'),
 }
 
 local c = M.palette
@@ -66,33 +67,33 @@ local c = M.palette
 M.lualine = {}
 
 -- This code is stolen directly from lualine github / theme auto section
--- And the style is totally inspired in tj's at date 09.04.2024
+-- And the style is totally inspired in tj's ui at date 09.04.2024
 
 M.lualine.theme = {
   normal = {
-    a = { bg = c.bg_d, fg = c.fg_l },
-    b = { bg = c.bg_m, fg = c.bg_l },
-    c = { bg = c.bg_m, fg = c.fg_l },
+    a = { bg = c.bg_m, fg = c.fg_l },
+    b = { bg = c.bg_d, fg = c.bg_l },
+    c = { bg = c.bg_d, fg = c.fg_l },
   },
   insert = {
-    a = { bg = c.bg_m, fg = c.fg_l },
-    b = { bg = c.bg_m, fg = c.bg_l },
-    c = { bg = c.bg_m, fg = c.fg_l },
+    a = { bg = c.bg_d, fg = c.fg_l },
+    b = { bg = c.bg_d, fg = c.bg_l },
+    c = { bg = c.bg_d, fg = c.fg_l },
   },
   replace = {
-    a = { bg = c.bg_d, fg = c.rep },
-    b = { bg = c.bg_m, fg = c.bg_l },
-    c = { bg = c.bg_m, fg = c.fg_l },
+    a = { bg = c.bg_m, fg = c.rep },
+    b = { bg = c.bg_d, fg = c.bg_l },
+    c = { bg = c.bg_d, fg = c.fg_l },
   },
   visual = {
-    a = { bg = c.bg_d, fg = c.vis },
-    b = { bg = c.bg_m, fg = c.bg_l },
-    c = { bg = c.bg_m, fg = c.fg_l },
+    a = { bg = c.bg_m, fg = c.vis },
+    b = { bg = c.bg_d, fg = c.bg_l },
+    c = { bg = c.bg_d, fg = c.fg_l },
   },
   command = {
-    a = { bg = c.bg_d, fg = c.com },
-    b = { bg = c.bg_m, fg = c.bg_l },
-    c = { bg = c.bg_m, fg = c.fg_l },
+    a = { bg = c.bg_m, fg = c.com },
+    b = { bg = c.bg_d, fg = c.bg_l },
+    c = { bg = c.bg_d, fg = c.fg_l },
   },
 }
 
@@ -101,21 +102,25 @@ M.incline = {}
 M.incline.get_highlights_from_lualine_theme = function()
   local table = {}
   local c = require('ui.color.config').lualine.theme
-
+  local p = require('ui.color.config').palette
+  ---TODO: unify the assignments to be from palette
   table.a = { name = 'InclineA', fg = c.normal.b.bg, bg = c.normal.b.fg, bold = true } -- position
-  -- table.a = { name = 'InclineA', fg = '#060606', bg = c.normal.b.fg, bold = true } -- position
-  table.b = { name = 'InclineB', fg = c.normal.a.fg, bg = c.normal.b.bg, bold = false } -- file
-  table.c = { name = 'InclineC', fg = c.normal.c.fg, bg = c.normal.c.bg, bold = false } -- diagnostic or grapple?
-  table.e = { name = 'InclineError', fg = c.replace.a.fg, bg = c.normal.c.bg, bold = false }
-  table.w = { name = 'InclineWarn', fg = c.visual.a.fg, bg = c.normal.c.bg, bold = false }
-  table.i = { name = 'InclineInfo', fg = c.insert.a.fg, bg = c.normal.c.bg, bold = false }
-  table.h = { name = 'InclineHint', fg = c.command.a.fg, bg = c.normal.c.bg, bold = false }
+  table.ai = { name = 'InclineAI', fg = c.normal.b.bg, bg = c.normal.b.fg, bold = true } -- position
+  table.b = { name = 'InclineB', fg = p.fg_l, bg = p.bg_d } -- file
+  table.bi = { name = 'InclineBI', fg = p.fg_l, bg = p.bg_d, bold = true, italic = true } -- file
+  table.c = { name = 'InclineC', fg = c.normal.c.fg, bg = c.normal.c.bg } -- diagnostic or grapple?
+  table.e = { name = 'InclineError', fg = c.replace.a.fg, bg = c.normal.c.bg }
+  table.w = { name = 'InclineWarn', fg = c.visual.a.fg, bg = c.normal.c.bg }
+  table.i = { name = 'InclineInfo', fg = c.insert.a.fg, bg = c.normal.c.bg }
+  table.h = { name = 'InclineHint', fg = c.command.a.fg, bg = c.normal.c.bg }
   return table
 end
 
 M.incline.set_incline_highlights = function(t)
   for _, hl in pairs(t) do
-    vim.api.nvim_set_hl(0, hl.name, { fg = hl.fg, bg = hl.bg, bold = hl.bold })
+    local italic = hl.italic or false
+    local bold = hl.bold or false
+    vim.api.nvim_set_hl(0, hl.name, { fg = hl.fg, bg = hl.bg, bold = bold, italic = italic })
   end
 end
 
@@ -136,46 +141,5 @@ M.incline.get_diagnostic_label = function(props)
   end
   return label
 end
-
--- color.setup_theme_table = function(colorschemes)
---   local result = {}
---   for cs, fts in pairs(colorschemes) do
---     for _, ft in pairs(fts) do
---       result[ft] = { colorscheme = cs }
---       -- result[ft] = cs
---     end
---   end
---   return result
--- end
---
--- color.set_theme = function(cs)
---   vim.schedule(function()
---     local cmd = string.format('colorscheme %s', cs)
---     vim.cmd(cmd)
---   end)
--- end
---
--- color.check_and_set_theme = function(colorschemes, default)
---   local colorscheme = function()
---     return vim.cmd 'colorscheme'
---   end
---   local filetype = vim.bo.filetype
---
---   local not_in_list = true
---
---   if filetype ~= '' then
---     for lang, cs in pairs(colorschemes) do
---       if filetype == lang and colorscheme ~= cs then
---         not_in_list = false
---         color.set_theme(cs)
---         break
---       end
---     end
---
---     if not_in_list and colorscheme ~= default then
---       color.set_theme(default)
---     end
---   end
--- end
 
 return M

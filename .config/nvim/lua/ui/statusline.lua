@@ -36,23 +36,7 @@ return {
     config = function()
       local incline = require('ui.color.config').incline
       local highlights = incline.get_highlights_from_lualine_theme()
-
-      vim.api.nvim_create_autocmd(
-        {
-          -- 'BufEnter',
-          'FileType',
-          'BufWinEnter',
-          'WinNew',
-        },
-        -- 'Colorscheme',
-        {
-          callback = function()
-            vim.schedule(function()
-              incline.set_incline_highlights(highlights)
-            end)
-          end,
-        }
-      )
+      incline.set_incline_highlights(highlights)
 
       require('incline').setup {
         window = {
@@ -67,49 +51,37 @@ return {
           cursorline = true,
         },
         render = function(props)
+          local diagnostics = incline.get_diagnostic_label(props)
+          local dynamic_space = (props.focused and #diagnostics > 0) and '' or ' '
+          local diagnostics_indicator = #diagnostics > 0 and '  ' or ''
+          diagnostics = props.focused and diagnostics or ''
+          diagnostics = {
+            diagnostics_indicator,
+            diagnostics,
+            group = 'InclineC',
+          }
+          local is_modified = vim.api.nvim_get_option_value('modified', { buf = props.buf })
+          local italic = is_modified and 'I' or ''
+          local dot = is_modified and '*' or ''
+
           local bufname = vim.api.nvim_buf_get_name(props.buf)
           local filename = vim.fn.fnamemodify(bufname, ':t')
-          if filename == '' then
-            filename = '[No Name]'
-          end
+          filename = filename == '' and '[No Name]' or filename
+          filename = string.format('%s  %s%s  ', dynamic_space, filename, dot)
           -- local is_modified = vim.api.nvim_buf_get_option(props.buf, 'modified')
-          -- local gui_modified = is_modified and 'bold,italic' or 'None'
-
-          -- local ft_icon, color = require('nvim-web-devicons').get_icon_color(filename)
-          -- local helpers = require 'incline.helpers'
+          local buffer_group = props.focused and 'InclineB' or 'InclineA'
+          buffer_group = string.format('%s%s', buffer_group, italic)
 
           local buffer = {
-            -- ft_icon and { ' ', ft_icon, ' ', guibg = color, guifg = helpers.contrast_color(color) } or '',
-            { '  ', filename, '  ' },
+            filename,
+            group = buffer_group,
           }
-
-          local diagnostics = incline.get_diagnostic_label(props)
-          -- if #diagnostics > 0 then
-          --   table.insert(diagnostics, 1, ' ')
-          -- end
 
           local row, col = unpack(vim.api.nvim_win_get_cursor(props.win))
           local pos = string.format('%s:%s', col, row)
-          local position = {
-            string.format(' %5s ', pos),
-            group = 'InclineA',
-          }
+          local position = { string.format(' %5s ', pos), group = 'InclineA' }
 
-          return {
-            {
-              group = 'InclineC',
-              ' ',
-              diagnostics,
-            },
-            {
-              group = 'InclineB',
-              buffer,
-            },
-            {
-              position,
-              group = 'InclineA',
-            },
-          }
+          return { diagnostics, buffer, position }
         end,
       }
     end,
