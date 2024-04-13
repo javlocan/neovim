@@ -33,9 +33,6 @@ return {
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          -- neovim nighhtly inline hints
-          vim.lsp.inlay_hint.enable(event.buf, true)
-
           map('<leader>h', function()
             local is_enabled = vim.lsp.inlay_hint.is_enabled(event.buf)
             vim.lsp.inlay_hint.enable(event.buf, not is_enabled)
@@ -53,6 +50,15 @@ return {
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
+          --
+          -- neovim nighhtly inline hints
+          if client and client.server_capabilities.inlayHintProvider then
+            vim.g.inlay_hints_visible = true
+            vim.lsp.inlay_hint.enable(event.buf, true)
+          else
+            print "There're no inlay hints"
+          end
+
           if client and client.server_capabilities.documentHighlightProvider then
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
