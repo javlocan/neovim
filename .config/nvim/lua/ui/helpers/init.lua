@@ -1,6 +1,7 @@
 return {
   { import = 'ui.helpers.which-key' },
   { import = 'ui.helpers.indent-blankline' },
+  { import = 'ui.helpers.gitsigns' },
   {
     'Tummetott/reticle.nvim',
     opts = {},

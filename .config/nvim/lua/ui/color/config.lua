@@ -6,19 +6,15 @@ local function extract_highlight_colors(color_group, scope)
     if vim.fn.hlexists(color_group) == 0 then
       return nil
     end
-
-    color = vim.api.nvim_get_hl_by_name(color_group, true)
-    if color.background ~= nil then
-      color.bg = string.format('#%06x', color.background)
-      color.background = nil
+    color = vim.api.nvim_get_hl(0, { name = color_group })
+    if color.bg ~= nil then
+      color.bg = string.format('#%06x', color.bg)
     end
-    if color.foreground ~= nil then
-      color.fg = string.format('#%06x', color.foreground)
-      color.foreground = nil
+    if color.fg ~= nil then
+      color.fg = string.format('#%06x', color.fg)
     end
-    if color.special ~= nil then
-      color.sp = string.format('#%06x', color.special)
-      color.special = nil
+    if color.sp ~= nil then
+      color.sp = string.format('#%06x', color.sp)
     end
   end
   if scope then
@@ -67,6 +63,7 @@ local c = M.palette
 M.lualine = {}
 
 -- This code is stolen directly from lualine github / theme auto section
+-- Slight modifications to adapt it to neovim nightly (0.10 today)
 -- And the style is totally inspired in tj's ui at date 09.04.2024
 
 M.lualine.theme = {
@@ -99,29 +96,22 @@ M.lualine.theme = {
 
 M.incline = {}
 
-M.incline.get_highlights_from_lualine_theme = function()
-  local table = {}
+M.incline.get_highlight_groups = function()
+  local p = M.palette
   local c = require('ui.color.config').lualine.theme
-  local p = require('ui.color.config').palette
-  ---TODO: unify the assignments to be from palette
-  table.a = { name = 'InclineA', fg = c.normal.b.bg, bg = c.normal.b.fg, bold = true } -- position
-  table.ai = { name = 'InclineAI', fg = c.normal.b.bg, bg = c.normal.b.fg, bold = true } -- position
-  table.b = { name = 'InclineB', fg = p.fg_l, bg = p.bg_d } -- file
-  table.bi = { name = 'InclineBI', fg = p.fg_l, bg = p.bg_d, bold = true, italic = true } -- file
-  table.c = { name = 'InclineC', fg = c.normal.c.fg, bg = c.normal.c.bg } -- diagnostic or grapple?
-  table.e = { name = 'InclineError', fg = c.replace.a.fg, bg = c.normal.c.bg }
-  table.w = { name = 'InclineWarn', fg = c.visual.a.fg, bg = c.normal.c.bg }
-  table.i = { name = 'InclineInfo', fg = c.insert.a.fg, bg = c.normal.c.bg }
-  table.h = { name = 'InclineHint', fg = c.command.a.fg, bg = c.normal.c.bg }
-  return table
-end
 
-M.incline.set_incline_highlights = function(t)
-  for _, hl in pairs(t) do
-    local italic = hl.italic or false
-    local bold = hl.bold or false
-    vim.api.nvim_set_hl(0, hl.name, { fg = hl.fg, bg = hl.bg, bold = bold, italic = italic })
-  end
+  local groups = {}
+  groups['InclineA'] = { guifg = c.normal.b.bg, guibg = c.normal.b.fg, gui = 'bold' } -- position
+  groups['InclineAI'] = { guifg = c.normal.b.bg, guibg = c.normal.b.fg, gui = 'bold' } -- position
+  groups['InclineB'] = { guifg = p.fg_l, guibg = p.bg_d } -- buff
+  groups['InclineBI'] = { guifg = p.fg_l, guibg = p.bg_d, gui = 'bold,italic' } -- buff
+  groups['InclineC'] = { guifg = c.normal.c.fg, guibg = c.normal.c.bg }
+  groups['InclineError'] = { guifg = c.replace.a.fg, guibg = c.normal.c.bg }
+  groups['InclineWarn'] = { guifg = c.visual.a.fg, guibg = c.normal.c.bg }
+  groups['InclineInfo'] = { guifg = c.insert.a.fg, guibg = c.normal.c.bg }
+  groups['InclineHint'] = { guifg = c.command.a.fg, guibg = c.normal.c.bg }
+
+  return groups
 end
 
 M.incline.get_diagnostic_label = function(props)

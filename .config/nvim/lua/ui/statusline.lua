@@ -32,11 +32,9 @@ return {
     dependencies = {
       'nvim-lualine/lualine.nvim',
     },
-
     config = function()
       local incline = require('ui.color.config').incline
-      local highlights = incline.get_highlights_from_lualine_theme()
-      incline.set_incline_highlights(highlights)
+      local highlight_groups = incline.get_highlight_groups()
 
       require('incline').setup {
         window = {
@@ -47,12 +45,13 @@ return {
           padding = 0, -- is only horizontal
           margin = { vertical = 2, horizontal = 0 },
         },
+        highlight = { groups = highlight_groups },
         hide = {
           cursorline = true,
         },
         render = function(props)
           local diagnostics = incline.get_diagnostic_label(props)
-          local dynamic_space = (props.focused and #diagnostics > 0) and '' or ' '
+          local dyn_space = (props.focused and #diagnostics > 0) and '' or ' '
           local diagnostics_indicator = #diagnostics > 0 and '  ' or ''
           diagnostics = props.focused and diagnostics or ''
           diagnostics = {
@@ -61,21 +60,18 @@ return {
             group = 'InclineC',
           }
           local is_modified = vim.api.nvim_get_option_value('modified', { buf = props.buf })
-          local italic = is_modified and 'I' or ''
-          local dot = is_modified and '*' or ''
+          local dyn_asterisk = is_modified and '*' or ''
+          local dyn_italic = is_modified and 'I' or ''
 
           local bufname = vim.api.nvim_buf_get_name(props.buf)
           local filename = vim.fn.fnamemodify(bufname, ':t')
           filename = filename == '' and '[No Name]' or filename
-          filename = string.format('%s  %s%s  ', dynamic_space, filename, dot)
-          -- local is_modified = vim.api.nvim_buf_get_option(props.buf, 'modified')
-          local buffer_group = props.focused and 'InclineB' or 'InclineA'
-          buffer_group = string.format('%s%s', buffer_group, italic)
+          filename = string.format('%s  %s%s  ', dyn_space, filename, dyn_asterisk)
 
-          local buffer = {
-            filename,
-            group = buffer_group,
-          }
+          local buffer_group = props.focused and 'InclineB' or 'InclineA'
+          buffer_group = string.format('%s%s', buffer_group, dyn_italic)
+
+          local buffer = { filename, group = buffer_group }
 
           local row, col = unpack(vim.api.nvim_win_get_cursor(props.win))
           local pos = string.format('%s:%s', col, row)
