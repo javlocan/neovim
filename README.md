@@ -1,7 +1,18 @@
 # my personal config forked from TJ's kickstart
 
-needs nightly build of neovim, at least v0.10 for inline hints
+heavily tailored to myself
 
-todo:
-refactor config arount locality of behaviour
-!! MASON WINDOW IS NOT SHOWING, ITS LIKE BEHIND --debug
+## good for
+
+- rust development
+- navigation with telescope and marks (grapple tags)
+- debugging with trouble
+
+## needs
+
+- nightly build of neovim, at least v0.10 for inline hints
+- rust-analyzer ```rustup component add rust-analyzer```
+
+## doing rn
+
+[ ] lualine-grapple-integration
