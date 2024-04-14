@@ -14,6 +14,7 @@ return {
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>f'] = { name = 'Telescope [F]ind', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+        ['m'] = { name = 'Grapple [M]arks', _ = 'which_key_ignore' },
       }
     end,
   },

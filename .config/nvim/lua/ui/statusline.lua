@@ -1,8 +1,16 @@
 return {
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+      'cbochs/grapple.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
     config = function()
+      local grapple = function()
+        return require('ui.navigation.config').lualine.grapple_info()
+      end
+
       require('lualine').setup {
         options = {
           globalstatus = true,
@@ -17,7 +25,7 @@ return {
               return string.format(' %s ', str)
             end,
           } },
-          lualine_b = {}, --{ 'buffers' },
+          lualine_b = { grapple }, --{ 'buffers' },
           lualine_c = {},
           lualine_x = {},
           lualine_y = { 'diff', 'branch' },
@@ -33,8 +41,8 @@ return {
       'nvim-lualine/lualine.nvim',
     },
     config = function()
-      local incline = require('ui.color.config').incline
-      local highlight_groups = incline.get_highlight_groups()
+      local color = require('ui.color.config').incline
+      local highlight_groups = color.get_highlight_groups()
 
       require('incline').setup {
         window = {
@@ -50,7 +58,7 @@ return {
           cursorline = true,
         },
         render = function(props)
-          local diagnostics = incline.get_diagnostic_label(props)
+          local diagnostics = color.get_diagnostic_label(props)
           local dyn_space = (props.focused and #diagnostics > 0) and '' or ' '
           local diagnostics_indicator = #diagnostics > 0 and '  ' or ''
           diagnostics = props.focused and diagnostics or ''
@@ -75,9 +83,17 @@ return {
 
           local row, col = unpack(vim.api.nvim_win_get_cursor(props.win))
           local pos = string.format('%s:%s', col, row)
-          local position = { string.format(' %5s ', pos), group = 'InclineA' }
+          local position = { string.format(' %4s', pos), group = 'InclineA' }
+          -- local position = { string.format(' %5s', pos), group = 'InclineA' }
 
-          return { diagnostics, buffer, position }
+          local grapple = require('ui.navigation.config').incline
+          grapple = grapple.buf_info(props.buf)
+          grapple = {
+            grapple,
+            group = 'InclineG',
+          }
+
+          return { diagnostics, buffer, position, grapple }
         end,
       }
     end,

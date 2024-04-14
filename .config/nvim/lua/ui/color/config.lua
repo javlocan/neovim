@@ -55,6 +55,7 @@ M.palette = {
   fg_m = extract_color_from_hllist('bg', { 'Normal', 'StatusLine' }, '#000000'),
   bg_l = extract_color_from_hllist('bg', { 'CursorLine' }, '#000000'),
   bg_m = extract_color_from_hllist('bg', { 'Normal', 'StatusLineNC' }, '#000000'),
+  bg_md = extract_color_from_hllist('bg', { 'TelescopeResultsNormal' }, '#000000'),
   bg_d = extract_color_from_hllist('bg', { 'StatusLine' }, '#000000'),
 }
 
@@ -106,10 +107,13 @@ M.incline.get_highlight_groups = function()
   groups['InclineB'] = { guifg = p.fg_l, guibg = p.bg_d } -- buff
   groups['InclineBI'] = { guifg = p.fg_l, guibg = p.bg_d, gui = 'bold,italic' } -- buff
   groups['InclineC'] = { guifg = c.normal.c.fg, guibg = c.normal.c.bg }
-  groups['InclineError'] = { guifg = c.replace.a.fg, guibg = c.normal.c.bg }
-  groups['InclineWarn'] = { guifg = c.visual.a.fg, guibg = c.normal.c.bg }
-  groups['InclineInfo'] = { guifg = c.insert.a.fg, guibg = c.normal.c.bg }
-  groups['InclineHint'] = { guifg = c.command.a.fg, guibg = c.normal.c.bg }
+  groups['InclineG'] = { guibg = p.bg_l, gui = 'bold' }
+  groups['InclineTag'] = { guifg = c.replace.a.fg, gui = 'bold' }
+  groups['InclineDim'] = { guifg = p.fg_m, gui = 'bold' }
+  groups['InclineError'] = { guifg = c.replace.a.fg }
+  groups['InclineWarn'] = { guifg = c.visual.a.fg }
+  groups['InclineInfo'] = { guifg = c.insert.a.fg }
+  groups['InclineHint'] = { guifg = c.command.a.fg }
 
   return groups
 end
