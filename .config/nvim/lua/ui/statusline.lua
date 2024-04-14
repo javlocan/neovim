@@ -12,7 +12,7 @@ return {
       local lualine = require('ui.navigation.config').lualine
       -- local grapple = lualine.get_grapple_component()
       local grapple = function()
-        return require('grapple').statusline {}
+        return require('grapple').statusline { icon = '󰍎' }
       end
       local fmt = lualine.fmt
 
