@@ -6,9 +6,35 @@ local icon = '󰍎'
 
 M.lualine = {}
 
-M.lualine.grapple_info = function()
-  local grapple = grapple.statusline { icon = icon }
-  return grapple
+M.lualine.fmt = function(str)
+  return string.format(' %s ', str)
+end
+
+local get_grapple_taglist = function()
+  local taglist = grapple.tags()
+end
+
+M.lualine.get_grapple_component = function()
+  local taglist = grapple.tags { scope = 'git' }
+  local color = 'TelescopeResultsNormal'
+  local component = {}
+
+  if taglist then
+    for i, _ in pairs(taglist) do
+      table.insert(component, {
+        function()
+          local tag = require('grapple').find { index = i, scope = 'git' }
+          local path = tag and tag.path or ' '
+          path = path:gsub('.*/', '')
+          local result = string.format('%s %s', i, path)
+          return tag and result
+        end,
+        color = color,
+      })
+    end
+  end
+
+  return component
 end
 
 M.incline = {}

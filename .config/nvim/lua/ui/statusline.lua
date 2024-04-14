@@ -7,25 +7,25 @@ return {
       'nvim-telescope/telescope.nvim',
     },
     config = function()
-      local grapple = function()
-        return require('ui.navigation.config').lualine.grapple_info()
-      end
+      local theme = require('ui.color.config').lualine.theme
+
+      local lualine = require('ui.navigation.config').lualine
+      local grapple = lualine.get_grapple_component()
+      local fmt = lualine.fmt
 
       require('lualine').setup {
         options = {
           globalstatus = true,
           component_separators = { left = ' ', right = ' ' },
           section_separators = { left = ' ', right = ' ' },
-          theme = require('ui.color.config').lualine.theme,
+          theme = theme,
         },
         sections = {
           lualine_a = { {
             'mode',
-            fmt = function(str)
-              return string.format(' %s ', str)
-            end,
+            fmt = fmt,
           } },
-          lualine_b = { grapple }, --{ 'buffers' },
+          lualine_b = {}, --grapple, --{ 'buffers' },
           lualine_c = {},
           lualine_x = {},
           lualine_y = { 'diff', 'branch' },
