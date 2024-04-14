@@ -77,30 +77,20 @@ return {
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       local servers = {
-        -- rust_analyzer = {
-        --   settings = {
-        --     ['rust-analyzer'] = {
-        --       checkOnSave = true,
-        --       check = {
-        --         enable = true,
-        --         command = 'clippy',
-        --         features = 'all',
-        --       },
-        --     },
-        --   },
-        -- },
         tsserver = {},
         lua_ls = {
           settings = {
             Lua = {
+              diagnostics = {
+                -- disable = { 'redefined-local' },
+                -- disable = { 'missing-fields' },
+              },
               completion = {
                 callSnippet = 'Replace',
               },
               hint = {
                 enable = true,
               },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },

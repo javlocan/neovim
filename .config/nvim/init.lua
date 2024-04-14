@@ -2,19 +2,18 @@ require 'config'
 
 require('lazy').setup({
   -- Import plugins by domain
-  require 'ui.greeter',
-  require 'ui.color', -- dir
-  require 'ui.helpers',
-  require 'ui.git',
-
+  require 'ui.statusline', -- integration
   require 'ui.navigation', -- dir
-  require 'ui.statusline',
+  require 'ui.color', -- dir
+  require 'ui.helpers', --dir
 
-  require 'code.treesitter',
-  require 'code.edit', -- dir
+  require 'ui.greeter',
 
   require 'code.diagnostics', -- dir
   require 'code.lsp', -- dir
+  require 'code.edit', -- dir
+
+  require 'code.treesitter',
   require 'code.cmp',
 }, {
   ui = {
