@@ -10,11 +10,14 @@ return {
       local theme = require('ui.color.config').lualine.theme
 
       local lualine = require('ui.navigation.config').lualine
-      -- local grapple = lualine.get_grapple_component()
-      local grapple = function()
-        return require('grapple').statusline { icon = '󰍎' }
-      end
       local fmt = lualine.fmt
+      -- local path = function()
+      --   local path = vim.fn.expand '%:.'
+      --   path = path:gsub('(.*)/.*$', '%1/')
+      --   return path
+      -- end
+
+      local grapple = lualine.unpack_grapple_statusline
 
       require('lualine').setup {
         options = {
@@ -28,7 +31,7 @@ return {
             'mode',
             fmt = fmt,
           } },
-          lualine_b = { grapple }, --{ 'buffers' },
+          lualine_b = { grapple { scope = 'git' } }, -- I don't know how to do this better
           lualine_c = {},
           lualine_x = {},
           lualine_y = { 'diff', 'branch' },
