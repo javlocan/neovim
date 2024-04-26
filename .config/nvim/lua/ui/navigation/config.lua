@@ -26,7 +26,8 @@ M.lualine.get_grapple_tag = function(args)
   local tag = g.find { scope = args.scope, index = args.index }
 
   local path = exists and minify_path(tag.path) or ''
-  return exists and string.format(' %s %s ', args.index, path) or string.format('[%s]', args.index)
+  local nc_pattern = ' [%s]'
+  return exists and string.format(' %s %s ', args.index, path) or string.format(nc_pattern, args.index)
 end
 
 M.lualine.unpack_grapple_statusline = function(args)
@@ -35,14 +36,27 @@ M.lualine.unpack_grapple_statusline = function(args)
   for i = 1, 10 do
     local command = string.format('require("ui.navigation.config").lualine.get_grapple_tag{ index = %s, scope = %s  }', i, args.scope)
     local color = function()
-      local check = require('grapple').exists { scope = 'git', index = i }
-      return check and 'Search' or 'TelescopeResultsNormal'
+      local check = require('grapple').exists { scope = args.scope, index = i }
+      return check and 'StatusLine' or 'StatusLineNC'
     end
-    component[i] = {
+    -- component[i] = {
+    --   command,
+    --   color = color,
+    --   padding = { left = 0, right = 0 },
+    -- }
+    table.insert(component, {
       command,
       color = color,
       padding = { left = 0, right = 0 },
-    }
+    })
+    local exists = require('grapple').exists { scope = args.scope, index = i }
+    if exists then
+      table.insert(component, {
+        command,
+        color = color,
+        padding = { left = 0, right = 0 },
+      })
+    end
   end
 
   return unpack(component)

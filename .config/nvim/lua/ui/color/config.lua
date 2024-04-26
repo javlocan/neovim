@@ -59,13 +59,13 @@ M.palette = {
   bg_d = extract_color_from_hllist('bg', { 'StatusLine' }, '#000000'),
 }
 
-local c = M.palette
-
 M.lualine = {}
 
 -- This code is stolen directly from lualine github / theme auto section
 -- Slight modifications to adapt it to neovim nightly (0.10 today)
 -- And the style is totally inspired in tj's ui at date 09.04.2024
+
+local c = M.palette
 
 M.lualine.theme = {
   normal = {

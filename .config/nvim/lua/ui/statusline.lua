@@ -11,18 +11,13 @@ return {
 
       local lualine = require('ui.navigation.config').lualine
       local fmt = lualine.fmt
-      -- local path = function()
-      --   local path = vim.fn.expand '%:.'
-      --   path = path:gsub('(.*)/.*$', '%1/')
-      --   return path
-      -- end
 
       local grapple = lualine.unpack_grapple_statusline
 
       require('lualine').setup {
         options = {
           globalstatus = true,
-          component_separators = { left = ' ', right = ' ' },
+          component_separators = { left = '', right = '' },
           section_separators = { left = ' ', right = ' ' },
           theme = theme,
         },
