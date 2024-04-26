@@ -10,26 +10,34 @@ M.lualine.fmt = function(str)
   return string.format(' %s ', str)
 end
 
-local minify_path = function(path) end
+local minify_path = function(path)
+  local root = vim.loop.cwd()
+  return string.gsub(path, root, '')
+end
+
 M.lualine.get_grapple_tag = function(args)
   local g = require 'grapple'
-  return function()
-    local e = g.exists { scope = args.scope, index = args.index }
-    local tag = g.find { scope = args.scope, index = args.index }
-    return string.format('(%s) %s', args.index, e and tag.path)
-  end
+
+  local exists = g.exists { scope = args.scope, index = args.index }
+  local tag = g.find { scope = args.scope, index = args.index }
+
+  local path = exists and minify_path(tag.path) or ''
+  return exists and string.format('%s %s', args.index, path) or string.format('[%s]', args.index)
 end
 
 M.lualine.unpack_grapple_statusline = function(args)
   local component = {}
 
   for i = 1, 10 do
-    local check = require('grapple').exists { scope = 'git', index = i }
+    local command = string.format('require("ui.navigation.config").lualine.get_grapple_tag{ index = %s, scope = %s  }', i, args.scope)
+    local color = function()
+      local check = require('grapple').exists { scope = 'git', index = i }
+      return check and 'Search' or 'TelescopeResultsNormal'
+    end
     component[i] = {
-      -- tag and command or tag,
-      check and string.format('require("ui.navigation.config").lualine.get_grapple_tag{ index = %s, scope = %s  }', i, args.scope)
-        or M.lualine.get_grapple_tag { scope = 'git', index = i },
-      color = check and 'Search' or 'TelescopeResultsNormal',
+      command,
+      color = color,
+      padding = { left = 0, right = 0 },
     }
   end
 

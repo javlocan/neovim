@@ -32,8 +32,8 @@ return {
             fmt = fmt,
           } },
           -- lualine_b = { path }, --grapple, --{ 'buffers' },
-          lualine_b = {},
-          lualine_c = { grapple { scope = 'git' } }, -- I don't know how to do this better
+          lualine_b = { grapple { scope = 'git' } }, -- I don't know how to do this better
+          lualine_c = {},
           lualine_x = {},
           lualine_y = { 'diff', 'branch' },
           lualine_z = {}, -- probably unused because of aesthetics
