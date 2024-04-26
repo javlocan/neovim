@@ -21,11 +21,9 @@ return {
         pickers = {
           buffers = {
             mappings = {
-              i = {
-                -- ['<C-q>'] = 'delete_buffer',
-              },
+              i = {},
               n = {
-                -- ['<C-q>'] = 'delete_buffer',
+                ['dd'] = 'delete_buffer',
               },
             },
           },
@@ -63,6 +61,7 @@ return {
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Search [G]it [F]iles' })
       vim.keymap.set('n', '<leader>fm', '<cmd>Telescope grapple tags<cr>', { desc = '[S]earch Saved [M]arks' })
+      vim.keymap.set('n', '<leader>ft', '<cmd>TodoTelescope<cr>', { desc = '[S]earch [S]elect Telescope' })
 
       vim.keymap.set('n', '<leader>/', function()
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
@@ -78,7 +77,7 @@ return {
         }
       end, { desc = '[S]earch [/] in Open Files' })
 
-      vim.keymap.set('n', '<leader>sn', function()
+      vim.keymap.set('n', '<leader>fn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
     end,

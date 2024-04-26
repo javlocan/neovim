@@ -70,6 +70,20 @@ return {
               callback = vim.lsp.buf.clear_references,
             })
           end
+          -- vim.api.nvim_create_autocmd('CursorHold', {
+          --   buffer = event.buf,
+          --   callback = function()
+          --     local opts = {
+          --       focusable = false,
+          --       close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
+          --       border = 'rounded',
+          --       source = 'always',
+          --       prefix = ' ',
+          --       scope = 'cursor',
+          --     }
+          --     vim.diagnostic.open_float(nil, opts)
+          --   end,
+          -- })
         end,
       })
 

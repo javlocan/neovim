@@ -1,6 +1,6 @@
 return {
-  { import = 'ui.navigation.grapple' },
-  { import = 'ui.navigation.telescope' },
-  -- { import = 'ui.navigation.marks' },
+  { import = 'ui.navigation.wezterm' },
   { import = 'ui.navigation.oil' },
+  { import = 'ui.navigation.telescope' },
+  { import = 'ui.navigation.grapple' },
 }

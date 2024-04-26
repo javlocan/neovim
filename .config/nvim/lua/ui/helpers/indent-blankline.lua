@@ -15,11 +15,11 @@ return {
       },
       whitespace = {
         highlight = { 'Pmenu', 'Whitespace' },
-        remove_blankline_trail = false,
+        remove_blankline_trail = true,
       },
-      viewport_buffer = {
-        min = -1,
-      },
+      -- viewport_buffer = {
+      --   min = -1,
+      -- },
       -- scope = { enabled = false },
       exclude = { filetypes = { 'dashboard', 'oil', 'help' } },
     },

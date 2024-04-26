@@ -1,24 +1,35 @@
 return {
-  {
-    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-    config = function()
-      vim.diagnostic.config {
-        -- virtual_text = false,
-        -- virtual_lines = {
-        --   highlight_whole_line = true,
-        --   only_current_line = true,
-        -- },
-        virtual_lines = false,
-      }
-      vim.keymap.set('', '<Leader>l', require('lsp_lines').toggle, { desc = 'Toggle lsp_lines' })
-
-      require('lsp_lines').setup()
-    end,
-  },
+  -- {
+  --   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+  --   config = function()
+  --     vim.diagnostic.config {
+  --       -- virtual_text = {
+  --       --   hl_mode = 'combine',
+  --       --   virt_text_pos = 'right_align',
+  --       --   spacing = 4,
+  --       -- },
+  --       virtual_text = true,
+  --       virtual_lines = false,
+  --     }
+  --     vim.keymap.set('', '<Leader>l', require('lsp_lines').toggle, { desc = 'Toggle lsp_lines' })
+  --
+  --     require('lsp_lines').setup()
+  --   end,
+  -- },
   { -- Linting
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
+      vim.diagnostic.config {
+        -- virtual_text = {
+        --   hl_mode = 'combine',
+        --   virt_text_pos = 'right_align',
+        --   spacing = 4,
+        -- },
+        virtual_text = true,
+        virtual_lines = false,
+      }
+
       local lint = require 'lint'
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
@@ -70,10 +81,10 @@ return {
           require('lint').try_lint()
         end,
       })
-      --   vim.keymap.set('n', '<leader>l', function()
-      --     lint.try_lint()
-      --     print 'Trigger linting for current file'
-      --   end, { desc = 'Trigger linting for current file' })
+      vim.keymap.set('n', '<leader>l', function()
+        lint.try_lint()
+        print 'Trigger linting for current file'
+      end, { desc = 'Trigger linting for current file' })
     end,
   },
 }
