@@ -10,8 +10,12 @@ M.lualine.fmt = function(str)
   return string.format(' %s ', str)
 end
 
+local escape = function(s)
+  return string.gsub(s, '[.*+?^$()[%%-]', '%%%0')
+end
+
 local minify_path = function(path)
-  local root = vim.loop.cwd()
+  local root = string.format([[%s/]], escape(vim.loop.cwd()))
   return string.gsub(path, root, '')
 end
 
@@ -22,7 +26,7 @@ M.lualine.get_grapple_tag = function(args)
   local tag = g.find { scope = args.scope, index = args.index }
 
   local path = exists and minify_path(tag.path) or ''
-  return exists and string.format('%s %s', args.index, path) or string.format('[%s]', args.index)
+  return exists and string.format(' %s %s ', args.index, path) or string.format('[%s]', args.index)
 end
 
 M.lualine.unpack_grapple_statusline = function(args)
