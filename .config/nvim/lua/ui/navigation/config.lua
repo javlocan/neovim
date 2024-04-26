@@ -10,31 +10,30 @@ M.lualine.fmt = function(str)
   return string.format(' %s ', str)
 end
 
-local get_grapple_taglist = function()
-  local taglist = grapple.tags()
+local minify_path = function(path) end
+M.lualine.get_grapple_tag = function(args)
+  local g = require 'grapple'
+  return function()
+    local e = g.exists { scope = args.scope, index = args.index }
+    local tag = g.find { scope = args.scope, index = args.index }
+    return string.format('(%s) %s', args.index, e and tag.path)
+  end
 end
 
-M.lualine.get_grapple_component = function()
-  local taglist = grapple.tags { scope = 'git' }
-  local color = 'TelescopeResultsNormal'
+M.lualine.unpack_grapple_statusline = function(args)
   local component = {}
 
-  if taglist then
-    for i, _ in pairs(taglist) do
-      table.insert(component, {
-        function()
-          local tag = require('grapple').find { index = i, scope = 'git' }
-          local path = tag and tag.path or ' '
-          path = path:gsub('.*/', '')
-          local result = string.format('%s %s', i, path)
-          return tag and result
-        end,
-        color = color,
-      })
-    end
+  for i = 1, 10 do
+    local check = require('grapple').exists { scope = 'git', index = i }
+    component[i] = {
+      -- tag and command or tag,
+      check and string.format('require("ui.navigation.config").lualine.get_grapple_tag{ index = %s, scope = %s  }', i, args.scope)
+        or M.lualine.get_grapple_tag { scope = 'git', index = i },
+      color = check and 'Search' or 'TelescopeResultsNormal',
+    }
   end
 
-  return component
+  return unpack(component)
 end
 
 M.incline = {}
