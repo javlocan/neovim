@@ -71,7 +71,7 @@ M.incline.buf_info = function(bfnr)
   -- tag = string.format('%s%s', icon, tag)
   local result = exists and tag or icon
   result = string.format(' %s ', result)
-  local group = exists and 'InclineTag' or 'InclineDim'
+  local group = exists and 'StatusLineTag' or 'StatusLineDim'
   return { result, group = group }
 end
 
