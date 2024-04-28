@@ -95,6 +95,24 @@ M.lualine.theme = {
   },
 }
 
+M.statusline = {}
+M.statusline.set_highlight_groups = function()
+  local p = M.palette
+  local c = require('ui.color.config').lualine.theme
+
+  vim.api.nvim_set_hl(0, 'StatusLineA', { fg = c.normal.b.bg, bg = c.normal.b.fg, bold = true }) -- position
+  vim.api.nvim_set_hl(0, 'StatusLineAI', { fg = c.normal.b.bg, bg = c.normal.b.fg, bold = true }) -- position
+  vim.api.nvim_set_hl(0, 'StatusLineB', { fg = p.fg_l, bg = p.bg_d }) -- buf
+  vim.api.nvim_set_hl(0, 'StatusLineBI', { fg = p.fg_l, bg = p.bg_d, bold = true, italic = true }) -- buff
+  vim.api.nvim_set_hl(0, 'StatusLineC', { fg = c.normal.c.fg, bg = c.normal.c.bg })
+  vim.api.nvim_set_hl(0, 'StatusLineG', { bg = p.bg_l, bold = true })
+  vim.api.nvim_set_hl(0, 'StatusLineTag', { fg = c.replace.a.fg, bold = true })
+  vim.api.nvim_set_hl(0, 'StatusLineDim', { fg = p.fg_m, bold = true })
+  vim.api.nvim_set_hl(0, 'StatusLineError', { fg = c.replace.a.fg })
+  vim.api.nvim_set_hl(0, 'StatusLineWarn', { fg = c.visual.a.fg })
+  vim.api.nvim_set_hl(0, 'StatusLineInfo', { fg = c.insert.a.fg })
+  vim.api.nvim_set_hl(0, 'StatusLineHint', { fg = c.command.a.fg })
+end
 M.incline = {}
 
 M.incline.get_highlight_groups = function()
@@ -102,18 +120,18 @@ M.incline.get_highlight_groups = function()
   local c = require('ui.color.config').lualine.theme
 
   local groups = {}
-  groups['InclineA'] = { guifg = c.normal.b.bg, guibg = c.normal.b.fg, gui = 'bold' } -- position
-  groups['InclineAI'] = { guifg = c.normal.b.bg, guibg = c.normal.b.fg, gui = 'bold' } -- position
-  groups['InclineB'] = { guifg = p.fg_l, guibg = p.bg_d } -- buff
-  groups['InclineBI'] = { guifg = p.fg_l, guibg = p.bg_d, gui = 'bold,italic' } -- buff
-  groups['InclineC'] = { guifg = c.normal.c.fg, guibg = c.normal.c.bg }
-  groups['InclineG'] = { guibg = p.bg_l, gui = 'bold' }
-  groups['InclineTag'] = { guifg = c.replace.a.fg, gui = 'bold' }
-  groups['InclineDim'] = { guifg = p.fg_m, gui = 'bold' }
-  groups['InclineError'] = { guifg = c.replace.a.fg }
-  groups['InclineWarn'] = { guifg = c.visual.a.fg }
-  groups['InclineInfo'] = { guifg = c.insert.a.fg }
-  groups['InclineHint'] = { guifg = c.command.a.fg }
+  groups['StatusLineA'] = { guifg = c.normal.b.bg, guibg = c.normal.b.fg, gui = 'bold' } -- position
+  groups['StatusLineAI'] = { guifg = c.normal.b.bg, guibg = c.normal.b.fg, gui = 'bold' } -- position
+  groups['StatusLineB'] = { guifg = p.fg_l, guibg = p.bg_d } -- buff
+  groups['StatusLineBI'] = { guifg = p.fg_l, guibg = p.bg_d, gui = 'bold,italic' } -- buff
+  groups['StatusLineC'] = { guifg = c.normal.c.fg, guibg = c.normal.c.bg }
+  groups['StatusLineG'] = { guibg = p.bg_l, gui = 'bold' }
+  groups['StatusLineTag'] = { guifg = c.replace.a.fg, gui = 'bold' }
+  groups['StatusLineDim'] = { guifg = p.fg_m, gui = 'bold' }
+  groups['StatusLineError'] = { guifg = c.replace.a.fg }
+  groups['StatusLineWarn'] = { guifg = c.visual.a.fg }
+  groups['StatusLineInfo'] = { guifg = c.insert.a.fg }
+  groups['StatusLineHint'] = { guifg = c.command.a.fg }
 
   return groups
 end
@@ -130,7 +148,7 @@ M.incline.get_diagnostic_label = function(props)
   for severity, icon in pairs(icons) do
     local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
     if n > 0 then
-      table.insert(label, { icon .. ' ' .. n .. ' ', group = 'Incline' .. severity })
+      table.insert(label, { icon .. ' ' .. n .. ' ', group = 'StatusLine' .. severity })
     end
   end
   return label

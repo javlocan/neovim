@@ -8,7 +8,7 @@ return {
     },
     config = function()
       local theme = require('ui.color.config').lualine.theme
-
+      require('ui.color.config').statusline.set_highlight_groups()
       local lualine = require('ui.navigation.config').lualine
       local fmt = lualine.fmt
 
@@ -43,7 +43,7 @@ return {
     },
     config = function()
       local color = require('ui.color.config').incline
-      local highlight_groups = color.get_highlight_groups()
+      -- local highlight_groups = color.get_highlight_groups()
 
       require('incline').setup {
         window = {
@@ -54,7 +54,7 @@ return {
           padding = 0, -- is only horizontal
           margin = { vertical = 2, horizontal = 0 },
         },
-        highlight = { groups = highlight_groups },
+        -- highlight = { groups = highlight_groups },
         hide = {
           cursorline = true,
         },
@@ -66,7 +66,7 @@ return {
           diagnostics = {
             diagnostics_indicator,
             diagnostics,
-            group = 'InclineC',
+            group = 'StatusLineC',
           }
           local is_modified = vim.api.nvim_get_option_value('modified', { buf = props.buf })
           local dyn_asterisk = is_modified and '*' or ''
@@ -77,21 +77,21 @@ return {
           filename = filename == '' and '[No Name]' or filename
           filename = string.format('%s  %s%s  ', dyn_space, filename, dyn_asterisk)
 
-          local buffer_group = props.focused and 'InclineB' or 'InclineA'
+          local buffer_group = props.focused and 'StatusLineB' or 'StatusLineA'
           buffer_group = string.format('%s%s', buffer_group, dyn_italic)
 
           local buffer = { filename, group = buffer_group }
 
           local row, col = unpack(vim.api.nvim_win_get_cursor(props.win))
           local pos = string.format('%s:%s', col, row)
-          local position = { string.format(' %4s', pos), group = 'InclineA' }
-          -- local position = { string.format(' %5s', pos), group = 'InclineA' }
+          local position = { string.format(' %4s', pos), group = 'StatusLineA' }
+          -- local position = { string.format(' %5s', pos), group = 'StatusLineA' }
 
           local grapple = require('ui.navigation.config').incline
           grapple = grapple.buf_info(props.buf)
           grapple = {
             grapple,
-            group = 'InclineG',
+            group = 'StatusLineG',
           }
 
           return { diagnostics, buffer, position, grapple }
