@@ -7,11 +7,11 @@ return {
       'nvim-telescope/telescope.nvim',
     },
     config = function()
-      local theme = require('ui.color.config').lualine.theme
-      require('ui.color.config').statusline.set_highlight_groups()
+      local color = require 'ui.color.config'
+      color.statusline.set_highlight_groups()
+
       local lualine = require('ui.navigation.config').lualine
       local fmt = lualine.fmt
-
       local grapple = lualine.unpack_grapple_statusline
 
       require('lualine').setup {
@@ -19,7 +19,7 @@ return {
           globalstatus = true,
           component_separators = { left = '', right = '' },
           section_separators = { left = ' ', right = ' ' },
-          theme = theme,
+          theme = color.lualine.theme,
         },
         sections = {
           lualine_a = { {
@@ -43,7 +43,6 @@ return {
     },
     config = function()
       local color = require('ui.color.config').incline
-      -- local highlight_groups = color.get_highlight_groups()
 
       require('incline').setup {
         window = {
@@ -54,7 +53,6 @@ return {
           padding = 0, -- is only horizontal
           margin = { vertical = 2, horizontal = 0 },
         },
-        -- highlight = { groups = highlight_groups },
         hide = {
           cursorline = true,
         },
@@ -85,7 +83,6 @@ return {
           local row, col = unpack(vim.api.nvim_win_get_cursor(props.win))
           local pos = string.format('%s:%s', col, row)
           local position = { string.format(' %4s', pos), group = 'StatusLineA' }
-          -- local position = { string.format(' %5s', pos), group = 'StatusLineA' }
 
           local grapple = require('ui.navigation.config').incline
           grapple = grapple.buf_info(props.buf)

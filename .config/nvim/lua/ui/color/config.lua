@@ -1,5 +1,9 @@
 local M = {}
 
+-- This code is stolen directly from lualine github / theme auto section
+-- Slight modifications to adapt it to neovim nightly (0.10 today)
+-- And the style is totally inspired in tj's ui at date 09.04.2024
+
 local function extract_highlight_colors(color_group, scope)
   local color = require('lualine.highlight').get_lualine_hl(color_group)
   if not color then
@@ -59,13 +63,9 @@ M.palette = {
   bg_d = extract_color_from_hllist('bg', { 'StatusLine' }, '#000000'),
 }
 
-M.lualine = {}
-
--- This code is stolen directly from lualine github / theme auto section
--- Slight modifications to adapt it to neovim nightly (0.10 today)
--- And the style is totally inspired in tj's ui at date 09.04.2024
-
 local c = M.palette
+
+M.lualine = {}
 
 M.lualine.theme = {
   normal = {
@@ -96,6 +96,7 @@ M.lualine.theme = {
 }
 
 M.statusline = {}
+
 M.statusline.set_highlight_groups = function()
   local p = M.palette
   local c = require('ui.color.config').lualine.theme
@@ -107,34 +108,15 @@ M.statusline.set_highlight_groups = function()
   vim.api.nvim_set_hl(0, 'StatusLineC', { fg = c.normal.c.fg, bg = c.normal.c.bg })
   vim.api.nvim_set_hl(0, 'StatusLineG', { bg = p.bg_l, bold = true })
   vim.api.nvim_set_hl(0, 'StatusLineTag', { fg = c.replace.a.fg, bold = true })
+  vim.api.nvim_set_hl(0, 'StatusLineTagBG', { fg = c.replace.a.fg, bg = p.bg_d, bold = true })
   vim.api.nvim_set_hl(0, 'StatusLineDim', { fg = p.fg_m, bold = true })
   vim.api.nvim_set_hl(0, 'StatusLineError', { fg = c.replace.a.fg })
   vim.api.nvim_set_hl(0, 'StatusLineWarn', { fg = c.visual.a.fg })
   vim.api.nvim_set_hl(0, 'StatusLineInfo', { fg = c.insert.a.fg })
   vim.api.nvim_set_hl(0, 'StatusLineHint', { fg = c.command.a.fg })
 end
+
 M.incline = {}
-
-M.incline.get_highlight_groups = function()
-  local p = M.palette
-  local c = require('ui.color.config').lualine.theme
-
-  local groups = {}
-  groups['StatusLineA'] = { guifg = c.normal.b.bg, guibg = c.normal.b.fg, gui = 'bold' } -- position
-  groups['StatusLineAI'] = { guifg = c.normal.b.bg, guibg = c.normal.b.fg, gui = 'bold' } -- position
-  groups['StatusLineB'] = { guifg = p.fg_l, guibg = p.bg_d } -- buff
-  groups['StatusLineBI'] = { guifg = p.fg_l, guibg = p.bg_d, gui = 'bold,italic' } -- buff
-  groups['StatusLineC'] = { guifg = c.normal.c.fg, guibg = c.normal.c.bg }
-  groups['StatusLineG'] = { guibg = p.bg_l, gui = 'bold' }
-  groups['StatusLineTag'] = { guifg = c.replace.a.fg, gui = 'bold' }
-  groups['StatusLineDim'] = { guifg = p.fg_m, gui = 'bold' }
-  groups['StatusLineError'] = { guifg = c.replace.a.fg }
-  groups['StatusLineWarn'] = { guifg = c.visual.a.fg }
-  groups['StatusLineInfo'] = { guifg = c.insert.a.fg }
-  groups['StatusLineHint'] = { guifg = c.command.a.fg }
-
-  return groups
-end
 
 M.incline.get_diagnostic_label = function(props)
   local icons = {
