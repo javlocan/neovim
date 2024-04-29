@@ -76,9 +76,6 @@ M.lualine.get_grapple_tag_path = function(args)
   local tag = g.find { scope = args.scope, index = args.index }
 
   local path = exists and minify_path(tag.path) or ''
-<<<<<<< HEAD
-  return exists and string.format('[%s] %s ', args.index, path) or string.format('%s', args.index)
-=======
   return exists and string.format('%s', path) or ''
 end
 
@@ -96,25 +93,11 @@ M.lualine.get_grapple_tag_color = function(args)
       return 'StatusLineNC'
     end
   end
->>>>>>> lualine-grapple-component
 end
 
 M.lualine.unpack_grapple_statusline = function(args)
   local component = {}
 
-<<<<<<< HEAD
-  for i = 1, 10 do
-    local command = string.format('require("ui.navigation.config").lualine.get_grapple_tag{ index = %s, scope = %s  }', i, args.scope)
-    local color = function()
-      local check = require('grapple').exists { scope = 'git', index = i }
-      return check and 'StatusLine' or 'StatusLineNC'
-    end
-    component[i] = {
-      command,
-      color = color,
-      padding = { left = 0, right = 0 },
-    }
-=======
   for index = 1, 10 do
     local tag_index = string.format('require("ui.navigation.config").lualine.get_grapple_tag_index{ index = %s, scope = %s  }', index, args.scope)
     local tag_index_color = M.lualine.get_grapple_tag_color
@@ -131,7 +114,6 @@ M.lualine.unpack_grapple_statusline = function(args)
       color = tag_path_color { scope = args.scope, index = index },
       padding = { left = 0, right = 1 },
     })
->>>>>>> lualine-grapple-component
   end
 
   return unpack(component)
