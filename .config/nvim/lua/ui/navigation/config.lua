@@ -14,7 +14,7 @@ local escape = function(s)
   return string.gsub(s, '[.*+?^$()[%%-]', '%%%0')
 end
 
-local get_file_name = function(path)
+local clean_root_from_path = function(path)
   local root = string.format([[%s/]], escape(vim.loop.cwd()))
   return string.gsub(path, root, '')
 end
@@ -75,7 +75,7 @@ M.lualine.get_grapple_tag_path = function(args)
   local exists = g.exists { scope = args.scope, index = args.index }
   local tag = g.find { scope = args.scope, index = args.index }
 
-  local path = exists and get_file_name(tag.path) or ''
+  local path = exists and clean_root_from_path(tag.path) or ''
   return exists and string.format('%s', path) or ''
 end
 
@@ -155,7 +155,7 @@ M.grapple.build_lualine_component = function(args)
 
       -- ESTA VUELTA PA VER DONDE SE CORTA CA UNO
       for i, path in ipairs(paths) do
-        paths[i].filename = get_file_name(path.full_path)
+        paths[i].filename = clean_root_from_path(path.full_path)
         if i > 1 then
           for j = i - 1, #paths - 1 do
             if paths[j].filename == paths[i].filename then
