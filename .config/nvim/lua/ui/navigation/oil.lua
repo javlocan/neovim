@@ -25,7 +25,7 @@ return {
       vim.api.nvim_create_autocmd('FileType', {
         pattern = { 'oil' },
         callback = function()
-          vim.keymap.set('n', 'q', '<CMD>q<CR>', { desc = 'Open parent directory', buffer = true })
+          vim.keymap.set('n', 'q', '<CMD>q<CR>', { desc = 'Close window', buffer = true })
         end,
       })
     end,

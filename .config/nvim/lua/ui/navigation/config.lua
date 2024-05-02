@@ -14,7 +14,7 @@ local escape = function(s)
   return string.gsub(s, '[.*+?^$()[%%-]', '%%%0')
 end
 
-local minify_path = function(path)
+local get_file_name = function(path)
   local root = string.format([[%s/]], escape(vim.loop.cwd()))
   return string.gsub(path, root, '')
 end
@@ -75,7 +75,7 @@ M.lualine.get_grapple_tag_path = function(args)
   local exists = g.exists { scope = args.scope, index = args.index }
   local tag = g.find { scope = args.scope, index = args.index }
 
-  local path = exists and minify_path(tag.path) or ''
+  local path = exists and get_file_name(tag.path) or ''
   return exists and string.format('%s', path) or ''
 end
 
@@ -117,6 +117,85 @@ M.lualine.unpack_grapple_statusline = function(args)
   end
 
   return unpack(component)
+end
+
+M.grapple = {}
+
+local minify_path = function(args)
+  local dont = args.no_minify
+  local path = args.path
+  return path
+end
+
+M.grapple.build_lualine_component = function(args)
+  local component = {}
+  local g = require 'grapple'
+  local tags_len = #g.tags { scope = args.scope }
+  vim.g.grapple.tags.len = tags_len
+
+  -- NO SE SI ESTO DEBERIA SER UN autocmd
+  -- DEBERIA OCURRIR SOLAMENTE CUANDO SE AñADAN NUEVAS tags
+  -- AL MENOS LA PARTE DE LOS paths
+  vim.api.nvim_create_autocmd('FileType', {
+    callback = function()
+      local current_bfnr = vim.api.nvim_win_get_buf(0)
+      local current_tag = g.find { scope = args.scope, buffer = current_bfnr }
+
+      vim.g.grapple.current_tag = current_tag
+
+      local paths = {}
+      local tags = g.tags { scope = args.scope }
+      if tags and #tags ~= vim.g.grapple.tags.len then
+        vim.g.grapple.tags.len = #tags
+
+        for i, tag in ipairs(tags) do
+          paths[i] = { { full_path = tag.path, no_minify = 1 } } -- don't minify the string fro m last slash to end
+        end
+      end
+
+      -- ESTA VUELTA PA VER DONDE SE CORTA CA UNO
+      for i, path in ipairs(paths) do
+        paths[i].filename = get_file_name(path.full_path)
+        if i > 1 then
+          for j = i - 1, #paths - 1 do
+            if paths[j].filename == paths[i].filename then
+
+              -- COMPARAR BIEN K NO HAGA SOLO LAP RIMEA OCURRENCIA
+              -- SE VIENE FUNCION RECURSIVA
+            end
+          end
+        end
+
+        -- TENGO K ITERAR DENTRO Y COMPARAR
+        -- ALGPRITMO
+        -- SI SE REPITE LA ULTIMA PARTE DE ALGUNO P.EJ. MOD.RS
+        -- ENTONSE no_minify +1
+        --
+      end
+
+      require('lualine').refresh {}
+    end,
+  })
+
+  local tags = require('grapple').tags { scope = args.scope }
+
+  for index = 1, 10 do
+    local tag_index = string.format('require("ui.navigation.config").lualine.get_grapple_tag_index{ index = %s, scope = %s  }', index, args.scope)
+    local tag_index_color = M.lualine.get_grapple_tag_color
+    table.insert(component, {
+      tag_index,
+      color = tag_index_color { scope = args.scope, index = index, is_index = true },
+      padding = { left = 1, right = 1 },
+    })
+
+    local tag_path = string.format('require("ui.navigation.config").lualine.get_grapple_tag_path{ index = %s, scope = %s  }', index, args.scope)
+    local tag_path_color = M.lualine.get_grapple_tag_color
+    table.insert(component, {
+      tag_path,
+      color = tag_path_color { scope = args.scope, index = index },
+      padding = { left = 0, right = 1 },
+    })
+  end
 end
 
 M.incline = {}

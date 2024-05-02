@@ -15,4 +15,6 @@ heavily tailored to myself
 
 ## doing rn
 
-[ ] lualine-grapple-integration
+[ ] run statusline grapple update on autocmd?
+[ ] grapple smart add to taglist
+[x] lualine-grapple-integration basic
