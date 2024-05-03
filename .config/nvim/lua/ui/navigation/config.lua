@@ -121,9 +121,19 @@ end
 
 M.grapple = {}
 
+local count_slashes = function(path)
+  local _, n = path:gsub '/'
+  return n
+end
+local minify_directory = function(path)
+  return string.format('%s/', string.sub(path, 1, 1))
+end
+
 local minify_path = function(args)
-  local dont = args.no_minify
+  -- local dont = args.no_minify
   local path = args.path
+  local minified = string.gsub(path, '([%a-_]+)/', minify_directory(path))
+  local count = #minified:gmatch '/'
   return path
 end
 
@@ -154,8 +164,9 @@ M.grapple.build_lualine_component = function(args)
       end
 
       -- ESTA VUELTA PA VER DONDE SE CORTA CA UNO
+
       for i, path in ipairs(paths) do
-        paths[i].filename = clean_root_from_path(path.full_path)
+        paths[i].clean_path = clean_root_from_path(path.full_path)
         if i > 1 then
           for j = i - 1, #paths - 1 do
             if paths[j].filename == paths[i].filename then
