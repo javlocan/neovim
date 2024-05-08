@@ -14,7 +14,7 @@ local escape = function(s)
   return string.gsub(s, '[.*+?^$()[%%-]', '%%%0')
 end
 
-local clean_root_from_path = function(path)
+local get_clean_path = function(path)
   local root = string.format([[%s/]], escape(vim.loop.cwd()))
   return string.gsub(path, root, '')
 end
@@ -75,7 +75,7 @@ M.lualine.get_grapple_tag_path = function(args)
   local exists = g.exists { scope = args.scope, index = args.index }
   local tag = g.find { scope = args.scope, index = args.index }
 
-  local path = exists and clean_root_from_path(tag.path) or ''
+  local path = exists and get_clean_path(tag.path) or ''
   return exists and string.format('%s', path) or ''
 end
 
@@ -153,36 +153,29 @@ M.grapple.build_lualine_component = function(args)
 
       vim.g.grapple.current_tag = current_tag
 
-      local paths = {}
+      local paths = vim.g.grapple.paths or {}
       local tags = g.tags { scope = args.scope }
       if tags and #tags ~= vim.g.grapple.tags.len then
-        vim.g.grapple.tags.len = #tags
+        vim.g.grapple.tags.len = #tags -- caching the number of tags
 
         for i, tag in ipairs(tags) do
           paths[i] = { { full_path = tag.path, no_minify = 1 } } -- don't minify the string fro m last slash to end
         end
       end
 
-      -- ESTA VUELTA PA VER DONDE SE CORTA CA UNO
+      for i, path in ipairs(paths) do
+        path.clean_path = get_clean_path(path.full_path)
+        local segments = path.clean_path:gmatch '([^/]+)'
+
+        for j = #segments, 1, -1 do
+          path.segments[j] = segments[#segments - j + 1]
+        end
+      end
 
       for i, path in ipairs(paths) do
-        paths[i].clean_path = clean_root_from_path(path.full_path)
-        if i > 1 then
-          for j = i - 1, #paths - 1 do
-            if paths[j].filename == paths[i].filename then
-
-              -- COMPARAR BIEN K NO HAGA SOLO LAP RIMEA OCURRENCIA
-              -- SE VIENE FUNCION RECURSIVA
-            end
-          end
-        end
-
-        -- TENGO K ITERAR DENTRO Y COMPARAR
-        -- ALGPRITMO
-        -- SI SE REPITE LA ULTIMA PARTE DE ALGUNO P.EJ. MOD.RS
-        -- ENTONSE no_minify +1
-        --
       end
+
+      -- ESTA VUELTA PA VER DONDE SE CORTA CA UNO
 
       require('lualine').refresh {}
     end,
