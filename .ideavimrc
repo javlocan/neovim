@@ -2,7 +2,6 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.opt.laststatus = 3
 vim.opt.scrolloff = 2
-
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'vim-scripts/ReplaceWithRegister'
@@ -17,3 +16,9 @@ set relativenumber
 " set commentary
 " set highlightedyank
 " set ReplaceWithRegister
+
+set ideajoin
+
+map <leader>l V<Action>(ReformatCode)
+map <leader>b <Action>(ToggleLineBreakpoint)
+unmap <C-w>
