@@ -14,8 +14,8 @@ return {
         char = '',
       },
       whitespace = {
-        highlight = { 'Pmenu', 'Whitespace' },
-        remove_blankline_trail = true,
+        highlight = { 'PmenuSel', 'Whitespace' },
+        remove_blankline_trail = false,
       },
       -- viewport_buffer = {
       --   min = -1,
